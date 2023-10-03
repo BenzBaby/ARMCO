@@ -12,7 +12,7 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <link rel="shortcut icon" href="{% static "images/fevicon.png" %}" type="">
+  <link rel="shortcut icon" href="{% static "images/s.png" %}" type="">
 
   <title> ARMCO TRACKS </title>
 
@@ -87,7 +87,10 @@
                   <a class="nav-link fw-bold " href="{% url "signup" %}">signup</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
+                  <a class="nav-link fw-bold " href= "admin1.html" >Admin</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url "about" %}">Trackday Orientation</a>
                 </li>
                 
                 <li class="nav-item">
@@ -112,7 +115,7 @@
     <!-- slider section -->
     <section class="slider_section ">
       <div class="slider_bg_box">
-       <img src="{% static "images/bike.jpg" %}" alt="">
+       <img src="{% static "images/200w.webp" %}" alt="">
       </div>
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
@@ -205,26 +208,23 @@
             Our <span>Services</span>
           </h2>
           <p>
-            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
+           
           </p>
         </div>
         <div class="row">
           <div class="col-md-6 ">
             <div class="box ">
               <div class="img-box">
-                <img src="{% static "images/s1.png" %}" alt="">
+                <img src="{% static "images/profile.png" %}" alt="">
               </div>
               <div class="detail-box">
                 <h5>
                   Trackday Registration
                 </h5>
                 <p>
-                  fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                  The
-                  point of using
+                  Trackday registration of riders and track slot reservation.
                 </p>
-                <a href="">
-                  Read More
+                
                 </a>
               </div>
             </div>
@@ -232,19 +232,16 @@
           <div class="col-md-6 ">
             <div class="box ">
               <div class="img-box">
-                <img src="{% static "images/s2.png" %}" alt="">
+                <img src="{% static "images/pay.png" %}" alt="">
               </div>
               <div class="detail-box">
                 <h5>
                   Online Payment
                 </h5>
                 <p>
-                  fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                  The
-                  point of using
+                 Online payment of Trackday and rental services 
                 </p>
-                <a href="">
-                  Read More
+                
                 </a>
               </div>
             </div>
@@ -252,19 +249,16 @@
           <div class="col-md-6 ">
             <div class="box ">
               <div class="img-box">
-                <img src="{% static "images/s3.png" %}" alt="">
+                <img src="{% static "images/duca.png" %}" alt="">
               </div>
               <div class="detail-box">
                 <h5>
                   Vehicle Rentals
                 </h5>
                 <p>
-                  fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                  The
-                  point of using
+                  rental services of riding gears & vehicle
                 </p>
-                <a href="">
-                  Read More
+               
                 </a>
               </div>
             </div>
@@ -272,19 +266,16 @@
           <div class="col-md-6 ">
             <div class="box ">
               <div class="img-box">
-                <img src="{% static "images/s4.png" %}" alt="">
+                <img src="{% static "images/th.jpg" %}" alt="">
               </div>
               <div class="detail-box">
                 <h5>
                   Company Trackday
                 </h5>
                 <p>
-                  fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                  The
-                  point of using
+                  Bike/car companies can register their best performing riders to provide an opportunity to ride with the other riders.
                 </p>
-                <a href="">
-                  Read More
+              
                 </a>
               </div>
             </div>
@@ -306,23 +297,25 @@
           <div class="detail-box">
             <div class="heading_container">
               <h2>
-                About <span>Us</span>
+               About<span>Track</span>
               </h2>
             </div>
             <p>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-              in some form, by injected humour, or randomised words which don't look even slightly believable. If you
-              are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in
-              the middle of text. All
+              Mugello Circuit (Autodromo Internazionale del Mugello) is a motorsport race track in Scarperia e San Piero, Florence, Tuscany, Italy. The circuit length is 5.245 km (3.259 mi). It has 15 turns and a 1.141 km (0.709 mi) long straight.[1] The circuit stadium stands have a capacity of 50,000.
+
+Grand Prix motorcycle racing host an annual event at the circuit (for MotoGP and smaller classes). In 2007 and 2008 the Deutsche Tourenwagen Masters held an annual event. The track is owned by Scuderia Ferrari since 1988, which uses it for Formula One testing.[2]
+
+The first race of the A1GP 2008–09 season was originally planned to be held at the Mugello circuit on 21 September 2008. However, the race had to be cancelled due to the delay in building the new chassis for the new race cars.[3]
+
+The circuit hosted its first ever Formula One race on 13 September 2020, named the Tuscan Grand Prix, as part of the season being restructured due to the COVID-19 pandemic.[4] This Grand Prix was the 1000th Grand Prix for Scuderia Ferrari.
             </p>
-            <a href="">
-              Read More
+            
             </a>
           </div>
         </div>
         <div class="col-md-6 ">
           <div class="img-box">
-            <img src="{% static "images/about-img.jpg" %}" alt="">
+            <img src="{% static "images/circuit.jpg" %}" alt="">
           </div>
         </div>
 
@@ -348,7 +341,7 @@
     <div class="container">
       <div class="heading_container">
         <h2>
-          What Says Our <span>Client</span>
+          Trackday Orientation classes by  <span>PROFESSIONALS</span>
         </h2>
       </div>
       <div class="client_container">
@@ -358,7 +351,8 @@
               <div class="box">
                 <div class="detail-box">
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                    
+Track day orientations are typically informational sessions or briefings provided to participants before they take part in a track day event, which involves driving high-performance or sports cars on a racetrack. The purpose of a track day orientation is to ensure the safety of all participants, promote responsible driving, and provide essential information about the event.
                   </p>
                 </div>
                 <div class="client_id">
