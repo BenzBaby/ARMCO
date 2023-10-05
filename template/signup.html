@@ -199,14 +199,14 @@
             <input type="password" id="confirm-password" name="confirm-password" placeholder="CONFIRM PASSWORD" required>
             <div class="error-message" id="confirm-password-error"></div><br>
             <center>
-                <label for="user_type">Select One:</label>
+                {% comment %} <label for="user_type">Select One:</label>
                 <div class="dropdown-container">
                     <select id="user_type" name="user_type" required>
                         <option value="">Select...</option>
                         <option value="rider">Rider</option>
                         <option value="company">Company</option>
                     </select>
-                </div>
+                </div> {% endcomment %}
                 <button id="signup-button">Signup</button>
                 <div class="error-message" id="user-type-error"></div>
                 

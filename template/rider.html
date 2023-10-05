@@ -96,7 +96,7 @@
     </style>
 </head>
 <body>
-    <form action="{% url 'logout' %}" method="post">
+    <form action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="logout-button">Logout</button>
       </form>
