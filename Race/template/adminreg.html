@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Accounts</title>
+    <style>
+        /* Top-level CSS for table formatting */
+        body {
+            background-color:#olive ;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* CSS for Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: magenta;
+            color: #fff;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #555;
+        }
+
+        /* CSS for Content Area */
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        /* CSS for Header */
+        .header {
+            background-color: ;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* CSS for the filter form */
+        form {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            margin-right: 10px;
+        }
+
+        /* CSS for the filter button */
+        .filter-button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* CSS for the user table */
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .user-table th,
+        .user-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .user-table th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .user-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .user-table tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Styling for the filter dropdown */
+        select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="#">Dashboard</a>
+        <a href="{% url 'adminreg' %}">User Accounts</a> <!-- Add the URL to your user accounts page -->
+        <a href="#"></a>
+        <a href="#"></a>
+    </div>
+    <div class="content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Welcome to the Admin Dashboard
+            </h1>
+            <h1>ARMCO RACETRACK</h1>
+        </div>
+        <h1>User Accounts</h1>
+        <form method="GET" action="{% url 'adminreg' %}">
+            <label for="role">Role:</label>
+            <select name="role">
+                <option value="">All</option>
+                <option value="RIDER">Rider</option>
+                <option value="COMPANY">Company</option>
+                <!-- Add more role options as needed -->
+            </select>
+            <button type="submit" class="filter-button">Filter</button>
+        </form>
+        
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in profiles %}
+                    <tr>
+                        <td>{{ profile.username }}</td>
+                        <td>{{ profile.email }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

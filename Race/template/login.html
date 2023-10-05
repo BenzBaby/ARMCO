@@ -1,0 +1,164 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}style="font-size:25px;">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <div class="center-wrapper">
+    <style>
+    
+        body {
+            
+            background-image: url('{% static "images/signupimg.jpg" %}');
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;   
+            font-family: Arial, sans-serif;
+            background-repeat:no-repeat;
+            background-size:cover;
+            
+        }
+        /* Add this CSS rule to set the font color of messages to white */
+        .messages {
+        color: white;
+        align-items: flex-start; 
+        display: flex;
+        justify-content: center;
+        }
+
+        .center-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* This will make it take up the full viewport height */
+        }
+        .container
+         {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            
+            
+        }
+
+        
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body background image="123.jpg">
+    <div class="container">
+        <h2>Login</h2>
+        {% if error_message %}
+        <div class="error-message">
+            {{ error_message }}
+        </div>
+        {% endif %}
+        <form id="signup.html" action="{% url 'login' %}" method="post">
+            {% csrf_token %} 
+        
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <div class="error-message" id="username-error"></div>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error-message" id="password-error"></div>
+      
+            <center>
+            <button type="submit" >Login</a></button><br><br>
+            <a href="{% url "signup" %}">Don't have an account? Signup</a><br><br>
+            <a href="{% url "password_reset" %}">Forget Password</a>
+            </a>         
+
+
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const usernameError = document.getElementById('username-error');
+        const passwordError = document.getElementById('password-error');
+
+        form.addEventListener('submit', function (e) {
+            let valid = true;
+
+            const usernamePattern = /^[a-zA-Z0-9]+$/;
+            if (!usernamePattern.test(usernameInput.value)) {
+                usernameError.textContent = 'Username can only contain letters and numbers.';
+                valid = false;
+            } else {
+                usernameError.textContent = '';
+            }
+
+            const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            if (!passwordPattern.test(passwordInput.value)) {
+                passwordError.textContent = 'Password must contain at least one numeric digit, one special character, one lowercase letter, and one uppercase letter.';
+                valid = false;
+            } else {
+                passwordError.textContent = '';
+            }
+
+            if (!valid) {
+                e.preventDefault(); 
+            }
+        });
+    </script>
+</body>
+</html>
+

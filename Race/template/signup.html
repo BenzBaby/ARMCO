@@ -1,0 +1,329 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <div class="center-wrapper">
+    <style>
+        /* Reset default margin and padding */
+        body, h2, label {
+            margin: 3;
+            padding: 0;
+        }
+    
+        body {
+            background-image: url('{% static "images/amg.jpg" %}');
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Fixed background */
+        }
+    
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            
+        }
+    
+        h2 {
+            text-align: center;
+            color: #007bff; /* Header text color */
+            margin-bottom: 10px; /* Add more space below the header */
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 10px; /* Adjusted margin for labels */
+            color: #333; /* Label text color */
+        }
+    
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 1px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+    
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px #007bff; /* Add a subtle box-shadow on focus */
+        }
+    
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+    
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Smooth hover transition */
+        }
+    
+        button:hover {
+            background-color: #0056b3; /* Darker color on hover */
+        }
+        .radio-container {
+            display: inline-block;
+            margin-right: 10px; /* Adjust the margin as needed */
+        }
+    
+        /* Style the radio button itself */
+        .radio-container input[type="radio"] {
+            display: none; /* Hide the actual radio button */
+        }
+    
+        /* Style the label to resemble a button */
+        .radio-container label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    
+        /* Style the label for selected radio buttons */
+        .radio-container input[type="radio"]:checked + label {
+            background-color: #0056b3;
+        }
+        /* Style for messages container */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.messages li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.messages .error {
+    color: #d9534f;
+    background-color: #f2dede;
+    border-color: #d9534f;
+}
+
+.messages .info {
+    color: #5bc0de;
+    background-color: #d9edf7;
+    border-color: #5bc0de;
+}
+
+.messages .success {
+    color: #5cb85c;
+    background-color: #dff0d8;
+    border-color: #5cb85c;
+}
+
+.messages .warning {
+    color: #f0ad4e;
+    background-color: #fcf8e3;
+    border-color: #f0ad4e;
+}
+.fire-text {
+    font-size: 3rem;
+    color: transparent;
+    background: linear-gradient(to bottom, #ff0000, #ff6600, #ffcc00, #ff6600, #ff0000);
+    background-clip: text;
+    -webkit-background-clip: text; /* For better browser compatibility */
+    animation: fireEffect 4s ease-in-out infinite alternate;
+}
+
+@keyframes fireEffect {
+    0% {
+        text-shadow: 0 0 80px #ff0000, 0 0 20px #ff6600, 0 0 30px #ffcc00, 0 0 40px #ff6600, 0 0 50px #ff0000;
+    }
+    100% {
+        text-shadow: 1 0 5px #ff0000, 0 0 40px #ff6600, 0 0 60px #ffcc00, 0 0 80px #ff6600, 0 0 100px #ff0000;
+    }
+}
+    </style>
+    
+</head>
+<body>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <center>
+    <h1 class="fire-text">ARMCO</h1>
+    </center>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form id="signup-form" action="#" method="post">
+            {% csrf_token %}
+            
+           
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="USERNAME" required><br>
+            <div class="error-message" id="username-error"></div>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="EMAIL" required>
+            <div class="error-message" id="email-error"></div>
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="PASSWORD" required><br>
+            <div class="error-message" id="password-error"></div>
+            
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="CONFIRM PASSWORD" required>
+            <div class="error-message" id="confirm-password-error"></div><br>
+            <center>
+                {% comment %} <label for="user_type">Select One:</label>
+                <div class="dropdown-container">
+                    <select id="user_type" name="user_type" required>
+                        <option value="">Select...</option>
+                        <option value="rider">Rider</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div> {% endcomment %}
+                <button id="signup-button">Signup</button>
+                <div class="error-message" id="user-type-error"></div>
+                
+            <a href="{% url "login" %}">Already have an account? login</a>
+            </form>
+            </div>
+            
+            <script>
+                
+            // Define validation functions
+            function validateUsername() {
+                const usernamePattern = /^[a-zA-Z0-9]+$/;
+                const usernameInput = document.getElementById('username');
+                const usernameError = document.getElementById('username-error');
+                
+                if (!usernamePattern.test(usernameInput.value)) {
+                    usernameError.textContent = 'Username can only contain letters and numbers.';
+                    usernameError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    usernameError.textContent = '';
+                    return true;
+                }
+            }
+            
+            function validateEmail() {
+                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                const emailInput = document.getElementById('email');
+                const emailError = document.getElementById('email-error');
+                
+                if (!emailPattern.test(emailInput.value)) {
+                    emailError.textContent = 'Invalid email address.';
+                    emailError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    emailError.textContent = '';
+                    return true;
+                }
+            }
+            
+            function validatePassword() {
+                const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+                const passwordInput = document.getElementById('password');
+                const passwordError = document.getElementById('password-error');
+                
+                if (!passwordPattern.test(passwordInput.value)) {
+                    passwordError.textContent = 'Password must contain at least one numeric digit, one special character, one lowercase letter, and one uppercase letter.';
+                    passwordError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    passwordError.textContent = '';
+                    return true;
+                }
+            }
+            
+            function validateConfirmPassword() {
+                const passwordInput = document.getElementById('password');
+                const confirmPasswordInput = document.getElementById('confirm-password');
+                const confirmPasswordError = document.getElementById('confirm-password-error');
+                
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    confirmPasswordError.textContent = 'Passwords do not match.';
+                    confirmPasswordError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    confirmPasswordError.textContent = '';
+                    return true;
+                }
+            }
+            
+            // Add event listeners to input fields for real-time validation
+            const usernameField = document.getElementById('username');
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
+            const confirmPasswordField = document.getElementById('confirm-password');
+            
+            usernameField.addEventListener('input', function() {
+                if (validateUsername()) {
+                    emailField.removeAttribute('disabled');
+                } else {
+                    emailField.setAttribute('disabled', 'true');
+                }
+            });
+            
+            emailField.addEventListener('input', function() {
+                if (validateEmail()) {
+                    passwordField.removeAttribute('disabled');
+                } else {
+                    passwordField.setAttribute('disabled', 'true');
+                }
+            });
+            
+            passwordField.addEventListener('input', function() {
+                if (validatePassword()) {
+                    confirmPasswordField.removeAttribute('disabled');
+                } else {
+                    confirmPasswordField.setAttribute('disabled', 'true');
+                }
+            });
+            
+            confirmPasswordField.addEventListener('input', validateConfirmPassword);
+            
+            // Handle form submission
+            const form = document.getElementById('signup-form');
+            
+            form.addEventListener('submit', function (e) {
+                // Validate all fields on submission
+                const isUsernameValid = validateUsername();
+                const isEmailValid = validateEmail();
+                const isPasswordValid = validatePassword();
+                const isConfirmPasswordValid = validateConfirmPassword();
+                
+                if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
+                    e.preventDefault(); // Prevent form submission if there are validation errors.
+                }
+            });
+            
+            </script>
+            </body>
+            </html>
+            
