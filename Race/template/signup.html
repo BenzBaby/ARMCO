@@ -180,7 +180,12 @@
         <h2>Sign Up</h2>
         <form id="signup-form" action="#" method="post">
             {% csrf_token %}
-            
+            <div class="role-selector">
+                <label for="rider">Rider:</label>
+                <input type="radio" id="rider" name="role" value="rider">
+                <label for="company">Company:</label>
+                <input type="radio" id="company" name="role" value="company">
+            </div>
            
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" placeholder="USERNAME" required><br>

@@ -15,13 +15,18 @@ urlpatterns = [
     path('forgot', auth_views.PasswordResetView.as_view(), name='password_reset'),
 
     path('rider/',views.rider,name='rider'),
+    path('company/',views.company,name='company'),
     
     path('password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/',CustomPasswordResetDoneView.as_view(),name='password_reset_done'),
     path('reset/<uidb64>/<token>/',CustomPasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     path('reset/done/',CustomPasswordResetCompleteView.as_view(),name='password_reset_complete'),
     
-     path('admin1/',views.admin1,name='admin1'),
-      path('adminreg/',views.adminreg,name='adminreg'),
+    path('admin1/',views.admin1,name='admin1'),
+    path('adminreg/',views.adminreg,name='adminreg'),
+      
+    
+    path('deactivate_user/<int:user_id>/', views.deactivate_user, name='deactivate_user'),
+    path('activate_user/<int:user_id>/', views.activate_user, name='activate_user'),  
 ]
     

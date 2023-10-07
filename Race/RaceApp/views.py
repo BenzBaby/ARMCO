@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate ,login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.views import PasswordResetView,PasswordResetConfirmView,PasswordResetDoneView,PasswordResetCompleteView
 from django.urls import reverse_lazy
+from django.db.models import Q  # Import Q for complex queries
+from django.shortcuts import render, redirect,get_object_or_404
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'password_reset_form.html'  # Your template for the password reset form
@@ -31,6 +33,7 @@ def signup(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirmPassword = request.POST.get('confirm-password')
+        role = request.POST.get('role')  # Add role selection in your signup form
        # phone_number = request.POST.get('phoneNumber')
         #address = request.POST.get('address')
       
@@ -43,7 +46,7 @@ def signup(request):
         elif password != confirmPassword:
             messages.error(request, "Passwords do not match")
         else:
-            user = CustomUser(username=username,email=email,role='RIDER')  # Change role as needed
+            user = CustomUser(username=username,email=email,role=role)  # Change role as needed
             user.set_password(password)
             user.save()
             messages.success(request, "Registered successfully")
@@ -60,8 +63,11 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             request.session['username'] = username
-            messages.success(request, "Login successful!")
-            return redirect("rider")  # Replace 'rider' with the name of your home page URL
+            if user.role == 'rider':
+            
+                return redirect("rider")  # Replace 'rider' with the name of your home page URL
+            elif user.role == 'company':
+                return redirect("company") 
         else:
             messages.error(request, "Invalid login credentials")
 
@@ -70,12 +76,25 @@ def login(request):
     return response
             
 def rider(request):
-   if 'username' in request.session:
+    messages.success(request, "Login successful!")
+    if 'username' in request.session:
        response = render(request, 'rider.html')
        response['Cache-Control'] = 'no-store, must-revalidate'
        return response
-   else:
+    else:
        return redirect('index') 
+   
+def company(request):
+    messages.success(request, "Login successful!")
+
+    if 'username' in request.session:
+
+       response = render(request, 'company.html')
+       response['Cache-Control'] = 'no-store, must-revalidate'
+       return response
+    else:
+        return redirect('index')
+       
 def logout(request):
     auth_logout(request) # Use the logout function to log the user out
     return redirect('index')  # Re   
@@ -98,10 +117,35 @@ def admin1(request):
 
 def adminreg(request):
     role_filter = request.GET.get('role')
+    
+    # Filter users based on role and exclude superusers
     if role_filter:
-        profiles = CustomUser.objects.filter(role=role_filter)
+        if role_filter == "rider":
+            profiles = CustomUser.objects.filter(Q(role=role_filter) & ~Q(is_superuser=True))
+        else:
+            profiles = CustomUser.objects.filter(Q(role=role_filter) & ~Q(is_superuser=True))
     else:
-        profiles = CustomUser.objects.all()
-
+        profiles = CustomUser.objects.filter(~Q(is_superuser=True))  # Exclude superusers
+    
     return render(request, 'adminreg.html', {'profiles': profiles})
+
+def deactivate_user(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    if user.is_active:
+        user.is_active = False
+        user.save()
+        messages.success(request, f"User '{user.username}' has been deactivated.")
+    else:
+        messages.warning(request, f"User '{user.username}' is already deactivated.")
+    return redirect('adminreg')
+
+def activate_user(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    if not user.is_active:
+        user.is_active = True
+        user.save()
+        messages.success(request, f"User '{user.username}' has been activated.")
+    else:
+        messages.warning(request, f"User '{user.username}' is already active.")
+    return redirect('adminreg')
 
