@@ -1,27 +1,245 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Profiles</title>
+    <title>User Accounts</title>
+    <style>
+        /* Top-level CSS for table formatting */
+        body {
+            background-color:#olive ;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* CSS for Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: magenta;
+            color: #fff;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #555;
+        }
+
+        /* CSS for Content Area */
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        /* CSS for Header */
+        .header {
+            background-color: ;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* CSS for the filter form */
+        form {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            margin-right: 10px;
+        }
+
+        /* CSS for the filter button */
+        .filter-button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* CSS for the user table */
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .user-table th,
+        .user-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .user-table th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .user-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .user-table tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Styling for the filter dropdown */
+        select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .large-message-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 9999;
+        }
+        
+        /* CSS for Message Box Content */
+        .message-content {
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        /* CSS for Close Button */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+    </style>
 </head>
-<body>
-    <h1>User Profiles</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>User Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user_profile in user_profiles %}
-            <tr>
-                <td>{{ user_profile.username }}</td>
-                <td>{{ user_profile.email }}</td>
-                <td>{{ user_profile.user_type }}</td>
-            </tr>
+{% if messages %}
+    <div class="large-message-box">
+        <span class="close-button" onclick="closeMessageBox()">&times;</span>
+        <div class="message-content">
+            {% for message in messages %}
+                {{ message|safe }}<br>
             {% endfor %}
-        </tbody>
-    </table>
+        </div>
+    </div>
+    {% endif %}
+    <div class="sidebar">
+        <a href="{% url  'admin1' %}">Dashboard</a>
+        <a href="{% url 'adminreg' %}">User Accounts</a> <!-- Add the URL to your user accounts page -->
+        <a href="#">Properties</a>
+        <a href="#">Orders</a>
+    </div>
+    <div class="content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Welcome to the Admin Dashboard</h1>
+        </div>
+        <h1>User Accounts</h1>
+        <form method="GET" action="{% url 'adminreg' %}">
+            <label for="role">Role:</label>
+            <select name="role">
+                <option value="">All</option>
+                <option value="rider">RIDER</option>
+                <option value="company">COMPANY</option>
+                <!-- Add more role options as needed -->
+            </select>
+            <button type="submit" class="filter-button">Filter</button>
+        </form>
+        
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Active</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in profiles %}
+                    <tr>
+                        <td>{{ profile.username }}</td>
+                        <td>{{ profile.email }}</td>
+                        <td>{{ profile.is_active }}</td>
+                        <td>{{ profile.role }}</td>
+                        <td>
+                            {% if profile.is_active %}
+                                <form method="post" action="{% url 'deactivate_user' profile.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Deactivate</button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{% url 'activate_user' profile.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Activate</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+    <script>
+        // Function to show the large message box
+        function showMessageBox() {
+            const messageBox = document.querySelector(".large-message-box");
+            messageBox.style.display = "block";
+        }
+    
+        // Function to close the large message box
+        function closeMessageBox() {
+            const messageBox = document.querySelector(".large-message-box");
+            messageBox.style.display = "none";
+        }
+    
+        // Call the showMessageBox function when the page loads
+        window.addEventListener("load", showMessageBox);
+        
+            // Function to show the large message box
+            function showMessageBox() {
+                const messageBox = document.querySelector(".large-message-box");
+                messageBox.style.display = "block";
+            }
+        
+            // Function to close the large message box
+            function closeMessageBox() {
+                const messageBox = document.querySelector(".large-message-box");
+                messageBox.style.display = "none";
+            }
+        
+            // Call the showMessageBox function when the page loads
+            window.addEventListener("load", showMessageBox);
+      
+    </script>
+
 </body>
 </html>
+
+

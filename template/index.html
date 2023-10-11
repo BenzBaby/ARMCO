@@ -86,15 +86,15 @@
                 <li class="nav-item">
                   <a class="nav-link fw-bold " href="{% url "signup" %}">signup</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link fw-bold " href= "admin1.html" >Admin</a>
+                {% comment %} <li class="nav-item">
+                  <a class="nav-link fw-bold " href= "{% url "admin1" %}" >Admin</a> {% endcomment %}
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url "about" %}">Trackday Orientation</a>
                 </li>
                 
                 <li class="nav-item">
-                  <a class="nav-link" href="contact.html">Contact Us</a>
+                  <a class="nav-link" href="contact.html"></a>
                 </li>
                 <li class="nav-item">
                   {% comment %} <a class="nav-link" href="login.html "> <i class="fa fa-user" aria-hidden="true"></i> Login</a> {% endcomment %}
@@ -359,7 +359,7 @@ Track day orientations are typically informational sessions or briefings provide
                   <div class="img-box">
                     <img src="{% static "images/client-1.png" %}" alt="" class="img-1">
                   </div>
-                  <div class="name">
+                  {% comment %} <div class="name">
                     <h6>
                       Adipiscing
                     </h6>
@@ -420,17 +420,17 @@ Track day orientations are typically informational sessions or briefings provide
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
                   </p>
-                </div>
+                </div>{% endcomment %}
                 <div class="client_id">
                   <div class="img-box">
                     <img src="{% static "images/client-2.png" %}" alt="" class="img-1">
                   </div>
                   <div class="name">
                     <h6>
-                      Adipiscing
+                      {% comment %} Adipiscing {% endcomment %}
                     </h6>
                     <p>
-                      Magna
+                      {% comment %} Magna {% endcomment %}
                     </p>
                   </div>
                 </div>
@@ -440,7 +440,7 @@ Track day orientations are typically informational sessions or briefings provide
         </div>
       </div>
     </div>
-  </section>
+  </section> 
 
   <!-- end client section -->
 
@@ -518,7 +518,7 @@ Track day orientations are typically informational sessions or briefings provide
               <a href="">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span>
-                  demo@gmail.com
+                  armcotracks@gmail.com
                 </span>
               </a>
             </div>
@@ -594,8 +594,8 @@ Track day orientations are typically informational sessions or briefings provide
   <section class="footer_section">
     <div class="container">
       <p>
-        &copy; <span id="displayYear"></span> All Rights Reserved By
-        <a href="https://html.design/">Free Html Templates</a>
+        &copy; <span id="displayYear"></span> Copyright ©  ARMCO RACETRACKS Pvt. Ltd.
+        <a href="https://html.design/"></a>
       </p>
     </div>
   </section>

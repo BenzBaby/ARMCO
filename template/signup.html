@@ -181,20 +181,20 @@
         <form id="signup-form" action="#" method="post">
             {% csrf_token %}
             
+            
            
-    
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" placeholder="USERNAME" required><br>
             <div class="error-message" id="username-error"></div>
-    
+            
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="EMAIL" required>
             <div class="error-message" id="email-error"></div>
-    
+            
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="PASSWORD" required><br>
             <div class="error-message" id="password-error"></div>
-    
+            
             <label for="confirm-password">Confirm Password</label>
             <input type="password" id="confirm-password" name="confirm-password" placeholder="CONFIRM PASSWORD" required>
             <div class="error-message" id="confirm-password-error"></div><br>
@@ -207,97 +207,131 @@
                         <option value="company">Company</option>
                     </select>
                 </div> {% endcomment %}
+                <div class="role-selector">
+                    <label for="role">Select a role:</label>
+                    <select id="role" name="role">
+                        <option value="rider">Rider</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div><br>
                 <button id="signup-button">Signup</button>
                 <div class="error-message" id="user-type-error"></div>
                 
-            <a href="{% url "login" %}">Already have an account? login</a>
-        </form>
-    </div>
-    
-    
-
-    <script>
-        // Define validation functions
-        function validateUsername() {
-            const usernamePattern = /^[a-zA-Z0-9]+$/;
-            const usernameInput = document.getElementById('username');
-            const usernameError = document.getElementById('username-error');
+                Already have an account?<a href="{% url "login" %}"> login</a>
+            </form>
+            </div>
             
-            if (!usernamePattern.test(usernameInput.value)) {
-                usernameError.textContent = 'Username can only contain letters and numbers.';
-                usernameError.style.fontSize = '16px';
-                return false;
-            } else {
-                usernameError.textContent = '';
-                return true;
+            <script>
+                
+            // Define validation functions
+            function validateUsername() {
+                const usernamePattern = /^[a-zA-Z0-9]+$/;
+                const usernameInput = document.getElementById('username');
+                const usernameError = document.getElementById('username-error');
+                
+                if (!usernamePattern.test(usernameInput.value)) {
+                    usernameError.textContent = 'Username can only contain letters and numbers.';
+                    usernameError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    usernameError.textContent = '';
+                    return true;
+                }
             }
-        }
-        
-        function validateEmail() {
-            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-            const emailInput = document.getElementById('email');
-            const emailError = document.getElementById('email-error');
             
-            if (!emailPattern.test(emailInput.value)) {
-                emailError.textContent = 'Invalid email address.';
-                emailError.style.fontSize = '16px';
-                return false;
-            } else {
-                emailError.textContent = '';
-                return true;
+            function validateEmail() {
+                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                const emailInput = document.getElementById('email');
+                const emailError = document.getElementById('email-error');
+                
+                if (!emailPattern.test(emailInput.value)) {
+                    emailError.textContent = 'Invalid email address.';
+                    emailError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    emailError.textContent = '';
+                    return true;
+                }
             }
-        }
-        
-        function validatePassword() {
-            const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-            const passwordInput = document.getElementById('password');
-            const passwordError = document.getElementById('password-error');
             
-            if (!passwordPattern.test(passwordInput.value)) {
-                passwordError.textContent = 'Password must contain at least one numeric digit, one special character, one lowercase letter, and one uppercase letter.';
-                passwordError.style.fontSize = '16px';
-                return false;
-            } else {
-                passwordError.textContent = '';
-                return true;
+            function validatePassword() {
+                const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+                const passwordInput = document.getElementById('password');
+                const passwordError = document.getElementById('password-error');
+                
+                if (!passwordPattern.test(passwordInput.value)) {
+                    passwordError.textContent = 'Password must contain at least one numeric digit, one special character, one lowercase letter, and one uppercase letter.';
+                    passwordError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    passwordError.textContent = '';
+                    return true;
+                }
             }
-        }
-        
-        function validateConfirmPassword() {
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirm-password');
-            const confirmPasswordError = document.getElementById('confirm-password-error');
             
-            if (passwordInput.value !== confirmPasswordInput.value) {
-                confirmPasswordError.textContent = 'Passwords do not match.';
-                confirmPasswordError.style.fontSize = '16px';
-                return false;
-            } else {
-                confirmPasswordError.textContent = '';
-                return true;
+            function validateConfirmPassword() {
+                const passwordInput = document.getElementById('password');
+                const confirmPasswordInput = document.getElementById('confirm-password');
+                const confirmPasswordError = document.getElementById('confirm-password-error');
+                
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    confirmPasswordError.textContent = 'Passwords do not match.';
+                    confirmPasswordError.style.fontSize = '16px';
+                    return false;
+                } else {
+                    confirmPasswordError.textContent = '';
+                    return true;
+                }
             }
-        }
-        
-        // Add event listeners to input fields for real-time validation
-        document.getElementById('username').addEventListener('input', validateUsername);
-        document.getElementById('email').addEventListener('input', validateEmail);
-        document.getElementById('password').addEventListener('input', validatePassword);
-        document.getElementById('confirm-password').addEventListener('input', validateConfirmPassword);
-        
-        // Handle form submission
-        const form = document.getElementById('signup-form');
-        
-        form.addEventListener('submit', function (e) {
-            // Validate all fields on submission
-            const isUsernameValid = validateUsername();
-            const isEmailValid = validateEmail();
-            const isPasswordValid = validatePassword();
-            const isConfirmPasswordValid = validateConfirmPassword();
             
-            if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
-                e.preventDefault(); // Prevent form submission if there are validation errors.
-            }
-        });
-    </script>
-</body>
-</html>
+            // Add event listeners to input fields for real-time validation
+            const usernameField = document.getElementById('username');
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
+            const confirmPasswordField = document.getElementById('confirm-password');
+            
+            usernameField.addEventListener('input', function() {
+                if (validateUsername()) {
+                    emailField.removeAttribute('disabled');
+                } else {
+                    emailField.setAttribute('disabled', 'true');
+                }
+            });
+            
+            emailField.addEventListener('input', function() {
+                if (validateEmail()) {
+                    passwordField.removeAttribute('disabled');
+                } else {
+                    passwordField.setAttribute('disabled', 'true');
+                }
+            });
+            
+            passwordField.addEventListener('input', function() {
+                if (validatePassword()) {
+                    confirmPasswordField.removeAttribute('disabled');
+                } else {
+                    confirmPasswordField.setAttribute('disabled', 'true');
+                }
+            });
+            
+            confirmPasswordField.addEventListener('input', validateConfirmPassword);
+            
+            // Handle form submission
+            const form = document.getElementById('signup-form');
+            
+            form.addEventListener('submit', function (e) {
+                // Validate all fields on submission
+                const isUsernameValid = validateUsername();
+                const isEmailValid = validateEmail();
+                const isPasswordValid = validatePassword();
+                const isConfirmPasswordValid = validateConfirmPassword();
+                
+                if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
+                    e.preventDefault(); // Prevent form submission if there are validation errors.
+                }
+            });
+            
+            </script>
+            </body>
+            </html>
+            

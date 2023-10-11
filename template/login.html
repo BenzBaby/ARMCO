@@ -6,7 +6,7 @@
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}style="font-size:20px;color: yellow;">{{ message }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -101,7 +101,7 @@
 </head>
 <body background image="123.jpg">
     <div class="container">
-        <h2>Login</h2>
+        <h2>Login</h2><br>
         {% if error_message %}
         <div class="error-message">
             {{ error_message }}
@@ -120,8 +120,8 @@
       
             <center>
             <button type="submit" >Login</a></button><br><br>
-            <a href="{% url "signup" %}">Don't have an account? Signup</a>
-            <a href="{% url "password_reset" %}">Don't have an account? Signup</a>
+            Don't have an account?<a href="{% url "signup" %}"> Signup</a><br><br>
+            <a href="{% url "password_reset" %}">Forget Password</a>
             </a>         
 
 
