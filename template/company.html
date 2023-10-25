@@ -101,6 +101,8 @@
         <button type="submit" class="logout-button">Logout</button>
       </form>
     <div class="container">
+        <form action="#" method="post">
+            {% csrf_token %}
         <div class="user-info">
             <div class="user-name">Welcome, {{ request.username }}</div>
             <div class="user-description">Company</div>

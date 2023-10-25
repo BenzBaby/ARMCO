@@ -85,9 +85,9 @@
         }
         .logout-button {
             position: absolute;
-            top: 10px; /* Adjust the top distance as needed */
-            right: 10px; /* Adjust the right distance as needed */
-            padding: 10px 20px;
+            top: 5px; /* Adjust the top distance as needed */
+            right: 5px; /* Adjust the right distance as needed */
+            padding: 1px 1px;
             background-color: #3498db;
             color: #fff;
             border: none;
@@ -98,9 +98,16 @@
 <body>
     <form action="{% url 'logout' %}">
         {% csrf_token %}
-        <button type="submit" class="logout-button">Logout</button>
+        <button type="submit" class="logout-button">
+            <img src="{% static "images/logout.gif" %}" alt="Logout" width="40" height="40" > <br>
+            Logout
+          </button>
+          
+        
       </form>
     <div class="container">
+        <form action="#" method="post">
+            {% csrf_token %}
         <div class="user-info">
             <div class="user-name">Welcome, {{ request.session.username }}</div>
             <div class="user-description">Rider</div>
