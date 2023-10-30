@@ -1,6 +1,9 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
+    
     <title>User Accounts</title>
     <style>
         /* Top-level CSS for table formatting */
@@ -150,8 +153,15 @@
     <div class="sidebar">
         <a href="{% url  'admin1' %}">Dashboard</a>
         <a href="{% url 'adminreg' %}">User Accounts</a> <!-- Add the URL to your user accounts page -->
-        <a href="#">Properties</a>
-        <a href="#">Orders</a>
+        <a href="{% url 'company_details' %}">View Company Details</a>
+        <a href="{% url 'rider_details' %}">View Rider Details</a>
+        <a href="{% url 'add_trackday' %}">Add Trackdays</a>
+        
+
+
+        
+
+        <a href="{% url 'logout' %}">LOGOUT</a>
     </div>
     <div class="content">
         <!-- Header -->
@@ -177,30 +187,53 @@
                     <th>Email</th>
                     <th>Active</th>
                     <th>Role</th>
+                    
+                    <th>Lap Time</th>
+                    <th>Category</th>
                     <th>Actions</th>
+                   
+                    
                 </tr>
             </thead>
             <tbody>
-                {% for profile in profiles %}
-                    <tr>
-                        <td>{{ profile.username }}</td>
-                        <td>{{ profile.email }}</td>
-                        <td>{{ profile.is_active }}</td>
-                        <td>{{ profile.role }}</td>
-                        <td>
-                            {% if profile.is_active %}
-                                <form method="post" action="{% url 'deactivate_user' profile.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">Deactivate</button>
-                                </form>
-                            {% else %}
-                                <form method="post" action="{% url 'activate_user' profile.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">Activate</button>
-                                </form>
-                            {% endif %}
-                        </td>
-                    </tr>
+            {% for profile in profiles %}
+            <tr>
+                <td>{{ profile.username }}</td>
+                <td>{{ profile.email }}</td>
+                <td>{{ profile.is_active }}</td>
+                <td>{{ profile.role }}</td>
+                <!-- Display lap time and category -->
+                <td>
+                    {% for item in lap_time_and_category %}
+                        {% if item.user_id == profile.id %}
+                            {{ item.lap_time|default:"N/A" }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for item in lap_time_and_category %}
+                        {% if item.user_id == profile.id %}
+                            {{ item.category|default:"N/A" }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            
+            <td>
+                {% if profile.is_active %}
+                    <form method="post" action="{% url 'deactivate_user' profile.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Deactivate</button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url 'activate_user' profile.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Activate</button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+    
+            
                 {% endfor %}
             </tbody>
         </table>

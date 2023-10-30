@@ -136,13 +136,13 @@
       
             <center>
             <button type="submit" >Login</a></button><br><br>
-            Don't have an account?<a href="{% url "signup" %}"> Signup</a><br><br>
+            Don't have an account?<a href="{% url "signup" %}"> SignUp</a><br><br>
             <a href="{% url "password_reset" %}">Forgot Password</a><br><br>
-            <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-signin-button">
+            {% comment %} <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-signin-button">
                 <img src="{% static "images/google.png" %}"  alt="Google Sign-In">
                 Google Signin
                
-            </a>
+            </a> {% endcomment %}
             </a>         
 
 

@@ -1,8 +1,4 @@
 {% load static %}
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,12 +92,12 @@
     </style>
 </head>
 <body>
-    <form action="{% url 'logout' %}" method="post">
+    <form action="{% url 'logout' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <button type="submit" class="logout-button">Logout</button>
       </form>
     <div class="container">
-        <form action="#" method="post">
+        <form action="#" method="post" enctype="multipart/form-data">
             {% csrf_token %}
         <div class="user-info">
             <div class="user-name">Welcome, {{ request.username }}</div>
@@ -109,9 +105,9 @@
         <h2>Trackday Registration</h2>
         <form id="registration-form">
             <div class="form-group">
-                <label for="companyname">Company Name</label>
-                <input type="text" id="companyname" name="companyname" required>
-            </div>
+                <label for="companyname">Rider Name</label>
+                <input type="text" id="companyname" name="companyname" required value="{{ request.session.username }}" readonly>
+            </div
             <div class="form-group">
                 <label for="trackdate">Trackday Date</label>
                 <input type="date" id="trackdate" name="trackdate" required min="2023-11-01">
@@ -123,7 +119,7 @@
             </div>
             <div class="form-group">
                 <button type="submit">Submit</button>
-              
+                
             </div>
         </form>
   

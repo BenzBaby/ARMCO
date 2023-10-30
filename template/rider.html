@@ -1,41 +1,20 @@
 {% load static %}
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trackday Registration</title>
-    <br><br><br>
     <style>
-        
-        body
-        
-        {
+        body {
             background-image: url('{% static "images/img.jpg" %}');
-            
-            background-size:cover;
-            font-family: Arial, sans-serif;background
-            
-            
-            
-            
-            margin: 0;
-            padding: 0;
-        }
-    
-       
-        {
+            background-size: cover;
             font-family: Arial, sans-serif;
-            
             margin: 0;
             padding: 0;
         }
 
-        
         .container {
             max-width: 400px;
             margin: 0 auto;
@@ -62,6 +41,7 @@
 
         input[type="text"],
         input[type="date"],
+        input[type="number"],
         select {
             width: 100%;
             padding: 10px;
@@ -83,108 +63,106 @@
         button:hover {
             background-color: #0056b3;
         }
+
         .logout-button {
             position: absolute;
-            top: 5px; /* Adjust the top distance as needed */
-            right: 5px; /* Adjust the right distance as needed */
+            top: 5px;
+            right: 5px;
             padding: 1px 1px;
             background-color: #3498db;
             color: #fff;
             border: none;
             border-radius: 5px;
-            cursor: pointer;        }
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <form action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="logout-button">
-            <img src="{% static "images/logout.gif" %}" alt="Logout" width="40" height="40" > <br>
+            <img src="{% static "images/logout.gif" %}" alt="Logout" width="40" height="40"> <br>
             Logout
-          </button>
-          
-        
-      </form>
+        </button>
+    </form>
     <div class="container">
-        <form action="#" method="post">
-            {% csrf_token %}
         <div class="user-info">
             <div class="user-name">Welcome, {{ request.session.username }}</div>
             <div class="user-description">Rider</div>
-        <h2>Trackday Registration</h2>
-        <form id="registration-form">
-            <div class="form-group">
-                <label for="ridername">Rider Name</label>
-                <input type="text" id="ridername" name="ridername" required>
-            </div>
-            <div class="form-group">
-                <label for="trackdate">Trackday Date</label>
-                <input type="date" id="trackdate" name="trackdate" required min="2023-11-01">
-            </div>
-            
-            
-            <div class="form-group">
-                <label for="bikerental">Bike Rental</label>
-                <select id="bikerental" name="bikerental">
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                    
-                </select>
-            </div>
-            <div id="bike-rental-section" style="display: none;">
+            <h2>Trackday Registration</h2>
+            <form id="registration-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="form-group">
-                    <label for="vehicle">Select Vehicle</label>
-                    <select id="vehicle" name="vehicle">
-                        <option value="Bike">Bike</option>
-                        <option value="Car">Car</option>
-                        
-                        
+                    <label for="ridername">Rider Name</label>
+                    <input type="text" id="ridername" name="ridername" required value="{{ request.session.username }}" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="trackdate">Select Trackday Date</label>
+                    <select id="trackdate" name="trackdate" required>
+                        {% for date in trackday_dates %}
+                            <option value="{{ date.date|date:'Y-m-d' }}">{{ date.date|date:'Y-m-d' }}</option>
+                        {% endfor %}
                     </select>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="gearrental">Riding Gear Rental</label>
-                <select id="gearrental" name="gearrental">
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                    
-                </select>
-            </div>
-            <div id="gear-rental-section" style="display: none;">
+                
+                
+                
                 <div class="form-group">
-                    <label for="gearselection">Select Riding Gear</label>
-                    <select id="gearselection" name="gearselection">
-                        <option value="helmet">Helmet</option>
-                        
-                        
+                    <label for="numberoftrackdays">Number of Trackdays (max 2)</label>
+                    <div class="number-selector">
+                        <input type="number" id="numberoftrackdays" name="numberoftrackdays" min="1" max="2">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vehiclerental">Vehicle Rental</label>
+                    <select id="vehiclerental" name="vehiclerental">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
                     </select>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="licensepdf">Upload License (PDF)</label>
-                <input type="file" id="licensepdf" name="licensepdf" accept=".pdf" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
-              
-            </div>
-        </form>
-  
+                <div class="form-group">
+                    <label for="gearrental">Riding Gear Rental</label>
+                    <select id="gearrental" name="gearrental">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="licensepdf">Upload License (PDF)</label>
+                    <input type="file" id="licensepdf" name="licensepdf" accept=".pdf">
+                </div>
+                <div class="form-group">
+                    <label for="profilepicture">Rider Profile Picture</label>
+                    <input type="file" id="profilepicture" name="profilepicture" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="display-profile-picture">Uploaded Profile Picture</label>
+                    <img id="display-profile-picture" src="" alt="Profile Picture" style="max-width: 200px; max-height: 200px;">
+                </div>
+                <div class="form-group">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+        </div>
     </div>
-
     <script>
-        // JavaScript to show/hide rental sections based on selection
-        const bikeRentalSelect = document.getElementById('bikerental');
-        const bikeRentalSection = document.getElementById('bike-rental-section');
-        const gearRentalSelect = document.getElementById('gearrental');
-        const gearRentalSection = document.getElementById('gear-rental-section');
-
-        bikeRentalSelect.addEventListener('change', () => {
-            bikeRentalSection.style.display = bikeRentalSelect.value === 'yes' ? 'block' : 'none';
-        });
-
-        gearRentalSelect.addEventListener('change', () => {
-            gearRentalSection.style.display = gearRentalSelect.value === 'yes' ? 'block' : 'none';
+        
+            // Get the username from the login page (replace 'your_username' with the actual username)
+         
+        
+        document.getElementById("profilepicture").addEventListener("change", function () {
+            var displayProfilePicture = document.getElementById("display-profile-picture");
+            var fileInput = this;
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    displayProfilePicture.src = e.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                displayProfilePicture.src = ""; // Clear the image if no file is selected
+            }
         });
     </script>
 </body>

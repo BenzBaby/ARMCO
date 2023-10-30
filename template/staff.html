@@ -136,6 +136,8 @@
             <div class="form-group">
                 <button type="submit">Submit</button>
             </div>
+            <p><a href="{% url 'staffview' %}">Go to Staff View</a></p>
+
         </form>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}

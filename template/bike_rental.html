@@ -1,0 +1,355 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike rental</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .image-and-specs {
+            display: flex;
+            align-items: center;
+        }
+    
+        .image-and-specs img {
+            max-width: 50%;
+            height: auto;
+            transition: transform 0.3s; /* Add a transition for the transform property */
+        }
+    
+        
+    
+        .image-and-specs img {
+            max-width: 50%; /* Adjust the width as needed */
+            height: auto;
+        }
+    
+        .specs {
+            flex: 1;
+            padding: 20px; /* Adjust the padding as needed */
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+    
+        .button:hover {
+            background-color: #0056b3; /* Change the color on hover */
+        }
+        .bike-description {
+            margin-top: 20px;
+            text-align: justify;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .container {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+    
+        .container:hover {
+            transform: scale(1.05); /* Zoom in by 5% on hover */
+            background-color: gold; /* Change the background color to gold on hover */
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .featured-section {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .featured-section img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .featured-content {
+            text-align: center;
+        }
+        .profile-picture-icon {
+            width: 100px; /* Adjust the width and height as needed for the circular icon */
+            height: 100px;
+            border-radius: 50%; /* Create a circular shape */
+            overflow: hidden; /* Hide overflow content (makes it circular) */
+            margin-right: 20px; /* Adjust the spacing between the icon and content */
+            background-color: #fff; /* Set a background color for the circular area (optional) */
+        }
+        
+        .profile-picture-icon img {
+            width: 100%; /* Make the image fill the circular area */
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 28px;
+            }
+
+            nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav a {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bike rentals</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="{% url 'edit_rider_profile' %}">Edit Profile</a>
+            <a href="{% url 'change_password' %}">Change Password</a>
+        </nav>
+    </header>
+   
+        <div class="featured-section">
+            <div class="image-and-specs">
+                <!-- Circular profile picture icon -->
+                <div class="profile-picture-icon">
+                    <img src="{{ profile_picture_url }}" alt="Profile Picture">
+                </div>
+                <!-- Rest of your content... -->
+                <div class="specs">
+                    <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">HELLO,{{ rider_username }}</h2>
+                    <!-- ... your other specifications ... -->
+                </div>
+                
+            </div>
+        </div>
+    <div class="container">
+        <div class="featured-section">
+            <div class="image-and-specs">
+                <img src="{% static "images/v4.webp" %}" alt="Ducati Panigale V4">
+                <div class="specs">
+                    <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">DUCATI PANIGALE V4</h2>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: 998 cc</h3>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: 220 PS @ 15250 rpm</h3>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: 112 Nm @ 11500 rpm</h3>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                <ul style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px; list-style-type: square; margin-left: 20px;">
+                    <li>Riding Modes</li>
+                    <li>Bosch Cornering ABS EVO</li>
+                    <li>Ducati Traction Control (DTC) EVO</li>
+                    <li>Ducati Wheelie Control (DWC) EVO</li>
+                    <li>Ducati Slide Control (DSC)</li>
+                </ul>
+                                              <a href="#" class="button">BOOK</a>
+            </div>
+            
+            
+        </div>
+        {% comment %} <h2>Rent:2500/Day</h2> {% endcomment %}
+        </div>
+    </div>
+     </div>
+     <div class="container">
+        <div class="featured-section">
+            <div class="image-and-specs">
+                <img src="{% static "images/ninja.webp" %}" alt="Ducati Panigale V4">
+                <div class="specs">
+                    <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">KAWASAKI NINJA ZX10R</h2>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: 998 cc</h3>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power:203 PS @ 13200 rpmABS</h3>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: 114.9 Nm @ 11400 rpm</h3>
+                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                <ul style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px; list-style-type: square; margin-left: 20px;">
+                    <li>Riding Modes</li>
+                    <li>Bosch Cornering ABS EVO</li>
+                    <li> Traction Control (DTC) EVO</li>
+                    <li> Wheelie Control (DWC) EVO</li>
+                    <li> Slide Control (DSC)</li>
+                </ul>
+                                              <a href="#" class="button">BOOK</a>
+            </div>
+            
+            
+        </div>
+        {% comment %} <h2>Rent:2300/Day</h2> {% endcomment %}
+        </div>
+    </div>
+    
+        </div>
+        <div class="container">
+            <div class="featured-section">
+                <div class="image-and-specs">
+                    <img src="{% static "images/rsv4.webp" %}" alt="Ducati Panigale V4">
+                    <div class="specs">
+                        <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">APRILIA RSV4</h2>
+                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: 1000 cc</h3>
+                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: 210 PS @ 15250 rpm</h3>
+                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: 120 Nm @ 11500 rpm</h3>
+                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                    <ul style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px; list-style-type: square; margin-left: 20px;">
+                        <li>Riding Modes</li>
+                        <li>Bosch Cornering ABS EVO</li>
+                        <li>APRILIA Traction Control (DTC) EVO</li>
+                        <li>APRILIA Wheelie Control (DWC) EVO</li>
+                        <li>APRILIA Slide Control (DSC)</li>
+                    </ul>
+                                                  <a href="#" class="button">BOOK</a>
+                </div>
+                
+                
+            </div>
+            {% comment %} <h2>Rent:2300/Day</h2> {% endcomment %}
+            </div>
+        </div>
+        
+            </div>
+            <div class="container">
+                <div class="featured-section">
+                    <div class="image-and-specs">
+                        <img src="{% static "images/s1000.webp" %}" alt="Ducati Panigale V4">
+                        <div class="specs">
+                            <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">BMW M1000RR</h2>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: 998 cc</h3>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: 220 PS @ 15250 rpm</h3>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: 112 Nm @ 11500 rpm</h3>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                        <ul style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px; list-style-type: square; margin-left: 20px;">
+                            <li>Riding Modes</li>
+                            <li>Bosch Cornering ABS EVO</li>
+                            <li>Ducati Traction Control (DTC) EVO</li>
+                            <li>Ducati Wheelie Control (DWC) EVO</li>
+                            <li>Ducati Slide Control (DSC)</li>
+                        </ul>
+                                                      <a href="#" class="button">BOOK</a>
+                    </div>
+                    
+                    
+                </div>
+                {% comment %} <h2>Rent:2500/Day</h2> {% endcomment %}
+                </div>
+            </div>
+            
+                </div>
+                <div class="container">
+                    <div class="featured-section">
+                        <div class="image-and-specs">
+                            <img src="{% static "images/gs.webp" %}" alt="Ducati Panigale V4">
+                            <div class="specs">
+                                <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">Suzuki GSX-R1000</h2>
+                            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: 1000 cc</h3>
+                            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: 211 PS @ 15250 rpm</h3>
+                            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: 115 Nm @ 11500 rpm</h3>
+                            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                            <ul style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px; list-style-type: square; margin-left: 20px;">
+                                <li>Riding Modes</li>
+                                <li> Cornering ABS EVO</li>
+                                <li>Traction Control (DTC) EVO</li>
+                                <li> Wheelie Control (DWC) EVO</li>
+                                <li> Slide Control (DSC)</li>
+                            </ul>
+                                                          <a href="#" class="button">BOOK</a>
+                        </div>
+                        
+                        
+                    </div>
+                    {% comment %} <h2>Rent:2500/Day</h2> {% endcomment %}
+                    </div>
+                </div>
+                
+                    </div>
+                    <div class="container">
+                        <div class="featured-section">
+                            <div class="image-and-specs">
+                                <img src="{% static "images/rq.webp" %}" alt="Ducati Panigale V4">
+                                <div class="specs">
+                                    <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">Yamaha YZF R1</h2>
+                                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: 998 cc</h3>
+                                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: 200 PS @ 15250 rpm</h3>
+                                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: 117 Nm @ 11500 rpm</h3>
+                                <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                                <ul style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px; list-style-type: square; margin-left: 20px;">
+                                    <li>Riding Modes</li>
+                                    <li>Bosch Cornering ABS </li>
+                                    <li> Traction Control  EVO</li>
+                                    <li> Wheelie Control  EVO</li>
+                                    <li> Slide Control </li>
+                                </ul>
+                                                              <a href="#" class="button">BOOK</a>
+                            </div>
+                            
+                            
+                        </div>
+                        {% comment %} <h2>Rent:2500/Day</h2> {% endcomment %}
+                        </div>
+                    </div>
+                    
+                        </div>
+                        {% comment %} <div class="container">
+                            <div class="featured-section">
+                                <div class="image-and-specs">
+                                    <img src="{% static "images/v4.jpg" %}" alt="Ducati Panigale V4">
+                                    <div class="specs">
+                                        <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">DUCATI PANIGALE V4</h2>
+                                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: 998 cc</h3>
+                                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: 220 PS @ 15250 rpm</h3>
+                                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: 112 Nm @ 11500 rpm</h3>
+                                    <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                                    <ul style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px; list-style-type: square; margin-left: 20px;">
+                                        <li>Riding Modes</li>
+                                        <li>Bosch Cornering ABS EVO</li>
+                                        <li>Ducati Traction Control (DTC) EVO</li>
+                                        <li>Ducati Wheelie Control (DWC) EVO</li>
+                                        <li>Ducati Slide Control (DSC)</li>
+                                    </ul>
+                                                                  <a href="#" class="button">BOOK</a>
+                                </div>
+                                
+                                
+                            </div>
+                            <h2>Rent:2500/Day</h2>
+                            </div>
+                        </div>
+                        
+                            </div>         {% endcomment %}
+        <!-- Add more content sections here -->
+
+    </div>
+</body>
+</html>
