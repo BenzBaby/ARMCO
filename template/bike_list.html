@@ -1,0 +1,203 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .image-and-specs {
+            display: flex;
+            align-items: center;
+        }
+        
+        .image-and-specs img {
+            max-width: 50%;
+            height: auto;
+            transition: transform 0.3s;
+        }
+    
+        .image-and-specs img {
+            max-width: 50%;
+            height: auto;
+        }
+    
+        .specs {
+            flex: 1;
+            padding: 20px;
+        }
+    
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+    
+        .button:hover {
+            background-color: #0056b3;
+        }
+    
+        .bike-description {
+            margin-top: 20px;
+            text-align: justify;
+        }
+    
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+    
+        header h1 {
+            font-size: 36px;
+        }
+    
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    
+        .container {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+    
+        .container:hover {
+            transform: scale(1.05);
+            background-color: gold;
+        }
+    
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+    
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    
+        .featured-section {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px 0;
+        }
+    
+        .featured-section img {
+            max-width: 100%;
+            height: auto;
+        }
+    
+        .featured-content {
+            text-align: center;
+        }
+    
+        .profile-picture-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+            background-color: #fff;
+        }
+    
+        .profile-picture-icon img {
+            width: 100%;
+            height: auto;
+        }
+    
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 28px;
+            }
+    
+            nav {
+                flex-direction: column;
+                text-align: center;
+            }
+    
+            nav a {
+                margin: 10px 0;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <h1>Bike rentals</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="{% url 'edit_rider_profile' %}">Edit Profile</a>
+            <a href="{% url 'change_password' %}">Change Password</a>
+        </nav>
+    </header>
+
+    <div class="featured-section">
+        <div class="image-and-specs">
+            <!-- Circular profile picture icon -->
+            <div class="profile-picture-icon">
+                <img src="{{ profile_picture_url }}" alt="Profile Picture">
+            </div>
+            <!-- Rest of your content... -->
+            <div class="specs">
+                <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">HELLO,{{ rider_username }}</h2>
+                <!-- ... your other specifications ... -->
+            </div>
+            
+        </div>
+    </div>
+    <div class="container">
+        <h1>Bike List</h1>
+
+        {% for bike in bikes %}
+            <div class="featured-section container">
+                <div class="image-and-specs">
+                    <img src="{{ bike.image.url }}" alt="{{ bike.name }} Image">
+                    <div class="specs">
+                        <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">{{ bike.name }}</h2>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: {{ bike.displacement }}</h3>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: {{ bike.max_power }}</h3>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: {{ bike.max_torque }}</h3>
+                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+                        {% if bike.additional_features %}
+                            <p style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px;">{{ bike.additional_features|safe }}</p>
+                        {% else %}
+                            <p style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px;">No additional features available.</p>
+                        {% endif}
+                        
+                            {% endif %}
+                        </ul>
+                        <a href="#" class="button">BOOK</a>
+                    </div>
+                </div>
+                <h2>Rent: ${{ bike.rent_per_day }}/Day</h2>
+            </div>
+        {% endfor %}
+
+        {% if bikes|length == 0 %}
+            <p>No bikes available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

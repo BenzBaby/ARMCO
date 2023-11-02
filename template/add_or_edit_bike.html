@@ -1,0 +1,129 @@
+{% load static %}
+{% block content %}
+    <div class="linkedin-like-page">
+        <div class="page-header">
+            <h1 class="page-title">{% if bike %}Edit Bike{% else %}Add Rental Vehicle{% endif %}</h1>
+        </div>
+
+        <div class="messages-container">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="page-content">
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                <div class="form-fields">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="save-button">Save</button>
+            </form>
+        </div>
+
+    </div>
+
+    <style>
+        .linkedin-like-page {
+            background-image: url('{% static "images/img.jpg" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Page header */
+        .page-header {
+            background-color: ;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        /* Page title */
+        .page-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Page content */
+        .page-content {
+            width: 100%;
+            max-width: 600px;
+            background-color: lightblue;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        /* Form fields */
+        .form-fields {
+            margin: 0 auto;
+        }
+
+        /* Submit button */
+        .save-button {
+            background-color: #0077b5;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .save-button:hover {
+            background-color: #005b8e;
+        }
+
+        /* Messages (success, error, etc.) */
+        .messages-container {
+            width: 100%;
+            max-width: 600px;
+            
+           
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        .messages {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .messages li {
+            font-size: 23px;
+            margin: 10px 0;
+        }
+
+        .error {
+            color: #e74c3c;
+        }
+
+        .success {
+            color: Black;
+        }
+    </style>
+</div>
+{% endblock %}

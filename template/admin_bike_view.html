@@ -1,0 +1,91 @@
+{% block content %}
+    <h1 class="page-title">Admin Vehicle View</h1>
+    <div class="table-container">
+        <table class="bike-table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Displacement (cc)</th>
+                    <th>Max Power (PS)</th>
+                    <th>Max Torque (Nm)</th>
+                    <th>Additional Features</th>
+                    <th>Rent/Day</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bike in bikes %}
+                <tr>
+                    <td class="bike-image-cell"><img src="{{ bike.image.url }}" alt="{{ bike.name }} Image"></td>
+                    <td>{{ bike.name }}</td>
+                    <td>{{ bike.displacement }}</td>
+                    <td>{{ bike.max_power }}</td>
+                    <td>{{ bike.max_torque }}</td>
+                    <td class="additional-features">
+                        {% if bike.additional_features %}
+                            {{ bike.additional_features|safe }}
+                        {% else %}
+                            No additional features available.
+                        {% endif %}
+                    <td>{{ bike.rent_per_day }}/Day</td>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Page title style */
+    .page-title {
+        font-family: 'Arial', sans-serif;
+        font-size: 28px;
+        color: #333;
+        text-align: center;
+    }
+
+    /* Table container style */
+    .table-container {
+        margin: 20px;
+    }
+
+    /* Bike table style */
+    .bike-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #f9f9f9;
+        border: 1px solid #dddddd;
+    }
+
+    .bike-table th, .bike-table td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .bike-table th {
+        background-color: #333;
+        color: #fff;
+    }
+
+    .bike-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Bike image cell style */
+    .bike-image-cell {
+        max-width: 100px;
+    }
+
+    .bike-image-cell img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Additional features style */
+    .additional-features {
+        text-align: justify;
+    }
+</style>
+{% endblock %}

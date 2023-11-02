@@ -1,0 +1,32 @@
+
+
+{% block content %}
+  <h2>Approve Staff Members</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for staff in staff_members %}
+        <tr>
+          <td>{{ staff.username }}</td>
+          <td>{{ staff.email }}</td>
+          <td>{{ staff.status }}</td>
+          <td>
+            <form method="post" action="{% url 'approve_staff' staff.id %}">
+              {% csrf_token %}
+              <button type="submit">Approve</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

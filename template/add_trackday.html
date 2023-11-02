@@ -42,7 +42,7 @@
         button:hover {
             background-color: #0056b3;
         }
-    </style>
+    </style>  <!-- ... (your existing head content) ... -->
 </head>
 <body>
     <div class="container">
@@ -58,10 +58,18 @@
                 <label for="trackdate">Trackday Date (YYYY-MM-DD)</label>
                 <input type="text" id="trackdate" name="date" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" required>
             </div>
-            
-            
             <button type="submit">Add Date</button>
         </form>
+
+        <!-- Display the list of added trackdays -->
+        {% if trackdays %}
+        <h3>Added Trackdays:</h3>
+        <ul>
+            {% for trackday in trackdays %}
+            <li>{{ trackday.date }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
 </body>
 </html>

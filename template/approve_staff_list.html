@@ -1,0 +1,42 @@
+
+{% block content %}
+    <h2>Staff Members to Approve</h2>
+
+    <ul>
+        {% for staff in staff_to_approve %}
+            <li>
+                {{ staff.username }} ({{ staff.email }})
+                <a href="{% url 'approve_staff' staff.id %}">Approve</a>
+                <a href="{% url 'reject_staff' staff.id %}">Reject</a>
+            </li>
+        {% empty %}
+            <p>No staff members to approve.</p>
+        {% endfor %}
+    </ul>
+
+    <h2>Approved Staff Members</h2>
+
+    <ul>
+        {% for staff in approved_staff %}
+            <li>
+                {{ staff.username }} ({{ staff.email }})
+                <!-- You can add additional details or actions for approved staff here -->
+            </li>
+        {% empty %}
+            <p>No approved staff members.</p>
+        {% endfor %}
+    </ul>
+
+    <h2>Rejected Staff Members</h2>
+
+    <ul>
+        {% for staff in rejected_staff %}
+            <li>
+                {{ staff.username }} ({{ staff.email }})
+                <!-- You can add additional details or actions for rejected staff here -->
+            </li>
+        {% empty %}
+            <p>No rejected staff members.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}

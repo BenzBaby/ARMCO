@@ -63,3 +63,32 @@ from django.db import models
 class Trackday(models.Model):
     date = models.DateField()
     # Add other fields as needed
+
+# bikes/models.py
+
+from django.db import models
+
+class Bike(models.Model):
+    name = models.CharField(max_length=100)
+    displacement = models.CharField(max_length=50)
+    max_power = models.CharField(max_length=50)
+    max_torque = models.CharField(max_length=50)
+    additional_features = models.TextField()
+    rent_per_day = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='bike_images/')
+
+from django.db import models
+
+class StaffProfile(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+
+    username = models.CharField(max_length=50)
+    email = models.EmailField(unique=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+
+    def __str__(self):
+        return self.username

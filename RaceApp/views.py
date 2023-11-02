@@ -180,7 +180,7 @@ def rider(request):
             profilepicture = request.FILES.get('profilepicture')
 
             if existing_registration:
-               return redirect('bike_rental')
+               return redirect('bike_list')
             else:
                 registration = TrackdayRegistration(
                     rider=user,
@@ -193,7 +193,7 @@ def rider(request):
                     profilepicture=profilepicture
                 )
                 registration.save()
-                return redirect('bike_rental')
+                return redirect('bike_list')
 
         return render(request, 'rider.html', {'existing_registration': existing_registration, 'trackday_dates': trackday_dates})
     else:
@@ -255,7 +255,7 @@ def edit_rider_profile(request):
                     existing_registration.profilepicture = profilepicture
 
                 existing_registration.save()
-                return redirect('bike_rental')  # Redirect to the rider's profile page
+                return redirect('bike_list')  # Redirect to the rider's profile page
 
         # Retrieve the available trackday dates
         trackday_dates = Trackday.objects.all()
@@ -406,17 +406,32 @@ def adminreg(request):
 
 # views.py
 from django.shortcuts import render
-from .forms import TrackdayForm
+from .models import Trackday  # Import your Trackday model or adjust the import
 
 def add_trackday(request):
+    date_added_successfully = False  # Initialize the success flag
+
     if request.method == 'POST':
-        form = TrackdayForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'add_trackday.html', {'date_added_successfully': True})
-    
-    form = TrackdayForm()
-    return render(request, 'add_trackday.html', {'form': form})
+        # Process the form data and add the trackday to the database
+        date = request.POST['date']
+        
+        # Check if a trackday with the same date already exists
+        if Trackday.objects.filter(date=date).exists():
+            # Date already exists, handle the error or display a message
+            date_added_successfully = False
+        else:
+            # Date is unique, create a new trackday and save it
+            trackday = Trackday(date=date)
+            trackday.save()
+            date_added_successfully = True
+
+    # Retrieve all added trackdays
+    trackdays = Trackday.objects.all()  # Modify this to match your model's name
+
+    return render(request, 'add_trackday.html', {
+        'date_added_successfully': date_added_successfully,
+        'trackdays': trackdays,
+    })
 
 
 
@@ -532,8 +547,15 @@ def is_registered_rider(username):
         rider = TrackdayRegistration.objects.get(rider__username=username)
         return True  # User is a registered rider
     except TrackdayRegistration.DoesNotExist:
-        return False  
-def login(request):
+        return False 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+ 
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib import messages
+from .models import StaffProfile
+def custom_login(request):
     username = '' 
     if request.method == "POST":
         username = request.POST.get('username')
@@ -544,10 +566,7 @@ def login(request):
             request.session['username'] = username
             return redirect("adminreg")  # Redirect to the admin dashboard
 
-        if username == "staff" and password == "staff":
-            # Staff login credentials are fixed
-            request.session['username'] = username
-            return redirect('staffview')  # Redirect to the staff dashboard
+       
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
@@ -558,7 +577,7 @@ def login(request):
                 # You can check if they are registered as a rider here
                 is_registered = is_registered_rider(username)# Replace this with code to check if the user is a registered rider
                 if is_registered:
-                    return redirect("bike_rental")  # Redirect to the bike rental page
+                    return redirect("bike_list")  # Redirect to the bike rental page
                 else:
                     return redirect("rider")  # Redirect to the rider dashboard
             elif user.role == 'company':
@@ -575,6 +594,7 @@ def login(request):
 
 
 
+  
   
 
 from django.shortcuts import render
@@ -688,24 +708,24 @@ def rider_details(request):
 
 
 
-from django.shortcuts import render
+# from django.shortcuts import render
 
-def bike_rental(request):
-    if 'username' in request.session:
-        User = get_user_model()
-        user = User.objects.get(username=request.session['username'])
+# def bike_rental(request):
+#     if 'username' in request.session:
+#         User = get_user_model()
+#         user = User.objects.get(username=request.session['username'])
 
-        existing_registration = TrackdayRegistration.objects.filter(rider=user).first()
+#         existing_registration = TrackdayRegistration.objects.filter(rider=user).first()
 
-        if existing_registration:
-            profile_picture_url = existing_registration.profilepicture.url
-            rider_username = user.username
-        else:
-            profile_picture_url = None
-            rider_username = ""
-        return render(request, 'bike_rental.html', {'profile_picture_url': profile_picture_url,'rider_username': rider_username})
-    else:
-        return redirect('index')
+#         if existing_registration:
+#             profile_picture_url = existing_registration.profilepicture.url
+#             rider_username = user.username
+#         else:
+#             profile_picture_url = None
+#             rider_username = ""
+#         return render(request, 'bike_list.html', {'profile_picture_url': profile_picture_url,'rider_username': rider_username})
+#     else:
+#         return redirect('index')
 
 
 def company_payment(request):
@@ -713,6 +733,10 @@ def company_payment(request):
 
 
 from django.contrib.auth import update_session_auth_hash
+from django.http import HttpResponse
+from django.contrib import messages
+
+
 @login_required
 def change_password(request):
     if request.method == "POST":
@@ -729,13 +753,235 @@ def change_password(request):
                 return redirect("password_change_success")
             else:
                 messages.error(request, "New password and confirmation password do not match.")
+                return HttpResponse("New password and confirmation password do not match.", status=400)
         else:
             messages.error(request, "Current password is incorrect.")
-    
+            return HttpResponse("Current password is incorrect.", status=400)
+
     return render(request, "change_password.html")
+
 
 
 from django.shortcuts import render
 
+
 def password_change_success(request):
     return render(request, 'password_change_success.html')
+
+
+# bikes/views.py
+
+from django.shortcuts import render, redirect
+from .models import Bike
+from .forms import BikeForm
+from django.contrib import messages
+
+def add_or_edit_bike(request, bike_id=None):
+    if bike_id:
+        bike = Bike.objects.get(pk=bike_id)
+    else:
+        bike = None
+
+    if request.method == 'POST':
+        form = BikeForm(request.POST, request.FILES, instance=bike)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Vehicle added successfully!')
+        
+           
+    else:
+        form = BikeForm(instance=bike)
+
+    return render(request, 'add_or_edit_bike.html', {'form': form, 'bike': bike})
+
+from django.shortcuts import render
+from .models import Bike
+from django.contrib.auth import get_user_model
+from .models import TrackdayRegistration  # Import your TrackdayRegistration model
+
+def bike_list(request):
+    if 'username' in request.session:
+        User = get_user_model()
+        user = User.objects.get(username=request.session['username'])
+
+        existing_registration = TrackdayRegistration.objects.filter(rider=user).first()
+
+        if existing_registration:
+            profile_picture_url = existing_registration.profilepicture.url
+            rider_username = user.username
+        else:
+            profile_picture_url = None
+            rider_username = ""
+
+        # Here, you should retrieve the list of bikes or whatever context data you need
+        # For example, if you have a Bike model:
+        bikes = Bike.objects.all()
+
+        return render(request, 'bike_list.html', {
+            'profile_picture_url': profile_picture_url,
+            'rider_username': rider_username,
+            'bikes': bikes,  # Add your list of bikes here
+        })
+    else:
+        return redirect('index')
+
+
+from django.shortcuts import render
+from .models import Bike  # Import your Bike model
+
+def admin_bike_view(request):
+    # Fetch all bikes from the database
+    bikes = Bike.objects.all()
+
+    return render(request, 'admin_bike_view.html', {'bikes': bikes})
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import StaffProfile
+
+from django.contrib.auth import login
+
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from RaceApp.models import CustomUser, StaffProfile
+from django.core.mail import send_mail
+
+def staff_signup(request):
+    error_message = ''  # Initialize error_message here
+
+    if request.method == 'POST':
+        # Process the form data and perform validation
+        username = request.POST['username']
+        email = request.POST.get('email', '')  # Use .get method with a default value
+        password = request.POST['password']
+
+        if not username or not email or not password:
+            error_message = "All fields are required."
+        else:
+            # Create a CustomUser object and set the username, email, and password
+            user = CustomUser.objects.create_user(username=username, email=email)
+            user.set_password(password)
+            user.save()
+
+            # Create a StaffProfile instance and set it to pending
+            staff = StaffProfile(username=username, email=email, status='pending')
+            staff.save()
+
+            # Send an email to the admin for approval or rejection
+            approval_link = f'http://{request.get_host()}/approve_staff/{staff.id}/'
+            rejection_link = f'http://{request.get_host()}/reject_staff/{staff.id}/'
+            send_mail(
+                'Staff Approval Request',
+                f'Please approve or reject the staff member {username} with email {email}.\n'
+                f'Approval Link: {approval_link}\n'
+                f'Rejection Link: {rejection_link}',
+                email,  # Use staff's provided email as the sender
+                ['armcotracks@gmail.com'],  # Admin's email
+                fail_silently=False,
+            )
+
+            # Authenticate the staff member and log them in
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+
+            return render(request, 'staff_login.html')  # Redirect to a success page
+
+    return render(request, 'staff_signup.html', {'error_message': error_message})
+
+
+
+from django.shortcuts import render, redirect
+from .models import StaffProfile  # Adjust this import to match your model
+from django.contrib import messages
+
+def approve_staff(request, staff_id):
+    try:
+        staff = StaffProfile.objects.get(pk=staff_id)
+        staff.status = 'Approved'
+        staff.save()
+        messages.success(request, f'Staff member {staff.username} has been approved.')
+    except StaffProfile.DoesNotExist:
+        messages.error(request, 'Staff member not found.')
+    
+    return redirect('approve_staff_list')
+from django.contrib import messages
+
+def reject_staff(request, staff_id):
+    try:
+        staff = StaffProfile.objects.get(pk=staff_id)
+        staff.status = 'Rejected'
+        staff.save()
+        messages.success(request, f'Staff member {staff.username} has been rejected.')
+    except StaffProfile.DoesNotExist:
+        messages.error(request, 'Staff member not found.')
+
+    return redirect('approve_staff_list')
+
+
+from django.shortcuts import render
+
+
+from .models import StaffProfile
+
+def approve_staff_list(request):
+    approved_staff = StaffProfile.objects.filter(status='Approved')
+    rejected_staff = StaffProfile.objects.filter(status='Rejected')
+    
+    return render(request, 'approve_staff_list.html', {
+        'approved_staff': approved_staff,
+        'rejected_staff': rejected_staff,
+    })
+
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from RaceApp.models import CustomUser, StaffProfile
+from django.core.mail import send_mail
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from RaceApp.models import CustomUser, StaffProfile
+from django.core.mail import send_mail
+from django.contrib import messages
+def staff_login(request):
+    error_message = ''  # Initialize error_message here
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            # Check if the staff member is approved
+            staff = StaffProfile.objects.get(username=username)
+            if staff.status == 'Approved':
+                login(request, user)
+                # Redirect to a success page or the desired destination
+                return redirect('staffview')
+            else:
+                error_message = "Your account has not been approved yet. Please wait for approval."
+        else:
+            # Handle login failure, e.g., show an error message
+            error_message = "Invalid username or password"
+
+    return render(request, 'staff_login.html', {'error_message': error_message})
+
+
+from django.shortcuts import render
+from .models import StaffProfile
+
+def staff_list(request):
+    staff_members = StaffProfile.objects.all()  # Query all staff members
+    context = {'staff_members': staff_members}
+    return render(request, 'staff_list.html', context)

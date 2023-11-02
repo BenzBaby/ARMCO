@@ -11,7 +11,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.index,name='index'),
-    path('login/',views.login,name='login'),
+    path('login/',views.custom_login,name='login'),
     path('index/',views.index,name='index'),
     path('logout/',views.logout,name='logout'),
     path('about/',views.about,name='about'),
@@ -49,7 +49,7 @@ urlpatterns = [
     
     path('rider/details/', views.rider_details, name='rider_details'),
     
-    path('bike_rental/', views.bike_rental, name='bike_rental'),
+    # path('bike_rental/', views.bike_rental, name='bike_rental'),
     
     path('edit_rider_profile/', views.edit_rider_profile, name='edit_rider_profile'),
     
@@ -61,6 +61,24 @@ urlpatterns = [
     path('password_change_success/', views.password_change_success, name='password_change_success'),
     
     path('add_trackday/', views.add_trackday, name='add_trackday'),
+    
+    path('add_or_edit_bike/', views.add_or_edit_bike, name='add_or_edit_bike'),
+    
+    path('bike_list/', views.bike_list, name='bike_list'),
+    
+    path('admin_bike_view/', views.admin_bike_view, name='admin_bike_view'),
+    
+    path('staff_signup/', views.staff_signup, name='staff_signup'),
+    
+    path('approve_staff/', views.approve_staff_list, name='approve_staff_list'),
+    path('approve_staff/<int:staff_id>/', views.approve_staff, name='approve_staff'),
+    path('reject_staff/<int:staff_id>/', views.reject_staff, name='reject_staff'),
+    
+    path('staff_login/', views.staff_login, name='staff_login'),
+    
+    path('staff_list/', views.staff_list, name='staff_list'),
+    
+    
 ]
     
 if settings.DEBUG:
