@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Booking Confirmations</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Define CSS classes for different statuses */
+        .status-over {
+            background-color: #ff9999; /* Red for "Over" */
+        }
+
+        .status-upcoming {
+            background-color: #99ff99; /* Green for "Upcoming" */
+        }
+    </style>
+</head>
+<body>
+    <h1>All Booking Confirmations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Rider</th>
+                <th>Email</th>
+                <th>Confirmation Date</th>
+                <th>Trackdays</th>
+                <th>Trackday Date</th>
+                <th>Current Status</th>
+                <th>Vehicle Name</th>
+                <th>Rental Amount (Per Day)</th>
+                <th>No. of Trackdays</th>
+                <th>Total Rental Amount</th>
+                <th>Total Trackday Amount</th>
+                <th>Total Amount</th> <!-- Added the Total Amount column -->
+                <th>Vehicle Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking_confirmation in booking_confirmations %}
+                <tr {% if booking_confirmation.trackday_registration %}class="status-{{ booking_confirmation.status|lower }}"{% endif %}>
+                    <td>{{ booking_confirmation.booking.rider.username }}</td>
+                    <td>{{ booking_confirmation.booking.rider.email }}</td>
+                    <td>{{ booking_confirmation.confirmation_date }}</td>
+                    <td>
+                        {% if booking_confirmation.trackday_registration %}
+                            {{ booking_confirmation.trackday_registration.number_of_trackdays }} trackday(s)
+                        {% else %}
+                            No trackday registration found
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking_confirmation.trackday_registration %}
+                            {{ booking_confirmation.trackday_registration.trackday_date }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ booking_confirmation.status }}</td>
+                    <td>
+                        {% if booking_confirmation.booking.bike %}
+                            {{ booking_confirmation.booking.bike.name }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking_confirmation.booking.bike %}
+                            {{ booking_confirmation.booking.bike.rent_per_day }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking_confirmation.trackday_registration %}
+                            {{ booking_confirmation.trackday_registration.number_of_trackdays }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking_confirmation.total_rent %}
+                            {{ booking_confirmation.total_rent }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking_confirmation.trackday_registration %}
+                            {{ booking_confirmation.total_trackday_amount }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking_confirmation.total_amount %}
+                            {{ booking_confirmation.total_amount }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    
+                    <td>
+                        {% if booking_confirmation.booking.bike %}
+                            <img src="{{ booking_confirmation.booking.get_bike_image_url }}" alt="Bike Image" width="100">
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

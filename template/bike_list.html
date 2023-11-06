@@ -168,32 +168,37 @@
         </div>
     </div>
     <div class="container">
-        <h1>Bike List</h1>
+        <h1>Vehicle List</h1>
 
-        {% for bike in bikes %}
-            <div class="featured-section container">
-                <div class="image-and-specs">
-                    <img src="{{ bike.image.url }}" alt="{{ bike.name }} Image">
-                    <div class="specs">
-                        <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">{{ bike.name }}</h2>
-                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: {{ bike.displacement }}</h3>
-                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: {{ bike.max_power }}</h3>
-                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: {{ bike.max_torque }}</h3>
-                        <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
-                        {% if bike.additional_features %}
-                            <p style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px;">{{ bike.additional_features|safe }}</p>
-                        {% else %}
-                            <p style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px;">No additional features available.</p>
-                        {% endif}
-                        
-                            {% endif %}
-                        </ul>
-                        <a href="#" class="button">BOOK</a>
-                    </div>
-                </div>
-                <h2>Rent: ${{ bike.rent_per_day }}/Day</h2>
-            </div>
-        {% endfor %}
+  <!-- bike_list.html -->
+<!-- ... -->
+{% for bike in bikes %}
+<div class="featured-section container">
+    <div class="image-and-specs">
+        <img src="{{ bike.image.url }}" alt="{{ bike.name }} Image">
+        <div class="specs">
+            <h2 style="font-family: 'Arial', sans-serif; color: #333; font-size: 24px;">{{ bike.name }}</h2>
+            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Displacement: {{ bike.displacement }}</h3>
+            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Power: {{ bike.max_power }}</h3>
+            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Max Torque: {{ bike.max_torque }}</h3>
+            <h3 style="font-family: 'Arial', sans-serif; color: #555; font-size: 18px;">Additional Features:</h3>
+            {% if bike.additional_features %}
+                <p style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px;">{{ bike.additional_features|safe }}</p>
+            {% else %}
+                <p style="font-family: 'Arial', sans-serif; color: #555; font-size: 16px;">No additional features available.</p>
+            {% endif %}
+            {% if bike.can_book %}
+                <a href="{% url 'book_bike' bike.id %}" class="button">BOOK</a>
+            {% else %}
+                <p style="color: #f00;">This Vehicle is fully booked</p>
+            {% endif %}
+        </div>
+    </div>
+    <h2>Rent: ₹{{ bike.rent_per_day }}/Day</h2>
+</div>
+{% endfor %}
+<!-- ... -->
+
 
         {% if bikes|length == 0 %}
             <p>No bikes available.</p>

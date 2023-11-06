@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .rental-amount {
+            font-size: 24px;
+            color: #FF6600;
+            margin-top: 20px;
+        }
+        a.button {
+            display: inline-block;
+            background-color: #FF6600;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        a.button:hover {
+            background-color: #FF3300;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Page</h1>
+        <p>Registration Details:</p>
+        <ul>
+            <li>Rider Name: {{ registration.rider_name }}</li>
+            <li>Trackday Date: {{ registration.trackday_date }}</li>
+            <li>Number of Trackdays: {{ registration.number_of_trackdays }}</li>
+            <li>Vehicle Rental: {{ registration.vehiclerental }}</li>
+            <!-- Add other registration details here -->
+        </ul>
+        
+        <p class="rental-amount">Rental Amount: ${{ rental_amount }}</p>
+
+        <a href="{% url 'edit_rider_norental' %}" class="button">Edit Profile</a>
+
+        <!-- Add payment form or interface here -->
+    </div>
+</body>
+</html>

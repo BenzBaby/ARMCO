@@ -45,28 +45,64 @@
 <body>
     <div class="container">
         <h1>All Rider Details</h1>
-        {% regroup riders by trackday_date as grouped_riders %}
-        {% for group in grouped_riders %}
-        <h2>Trackday Date: {{ group.grouper }}</h2>
-        {% for rider in group.list %}
-        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-            <p><strong>Rider Name:</strong> {{ rider.rider_name }}</p>
-            <p><strong>Number of Trackdays:</strong> {{ rider.number_of_trackdays }}</p>
-            <p><strong>Vehicle Rental:</strong> {{ rider.vehiclerental }}</p>
-            <p><strong>Gear Rental:</strong> {{ rider.gearrental }}</p>
-            {% if rider.licensepdf %}
-            <p><strong>License:</strong> <a href="{{ rider.licensepdf.url }}" target="_blank">View License</a></p>
-            {% else %}
-            <p><strong>License:</strong> Not available</p>
-            {% endif %}
-            {% if rider.profilepicture %}
-            <p><strong>ProfilePicture:</strong> <a href="{{ rider.profilepicture.url }}" target="_blank">View ProfilePicture</a></p>
-            {% else %}
-            <p><strong>ProfilePicture:</strong> Not available</p>
-            {% endif %}
-        </div>
-        {% endfor %}
-        {% endfor %}
+        <input type="text" id="dateFilter" placeholder="Filter by Trackday Date">
+        <table id="riderTable">
+            <thead>
+                <tr>
+                    <th>Trackday Date</th>
+                    <th>Rider Name</th>
+                    <th>Number of Trackdays</th>
+                    <th>Vehicle Rental</th>
+                    <th>Gear Rental</th>
+                    <th>License</th>
+                    <th>Profile Picture</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% regroup riders by trackday_date as grouped_riders %}
+                {% for group in grouped_riders %}
+                    {% for rider in group.list %}
+                        <tr>
+                            <td>{{ group.grouper }}</td>
+                            <td>{{ rider.rider_name }}</td>
+                            <td>{{ rider.number_of_trackdays }}</td>
+                            <td>{{ rider.vehiclerental }}</td>
+                            <td>{{ rider.gearrental }}</td>
+                            <td>
+                                {% if rider.licensepdf %}
+                                    <a href="{{ rider.licensepdf.url }}" target="_blank">View License</a>
+                                {% else %}
+                                    Not available
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if rider.profilepicture %}
+                                    <a href="{{ rider.profilepicture.url }}" target="_blank">View Profile Picture</a>
+                                {% else %}
+                                    Not available
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+
+    <script>
+        // Add JavaScript to handle the date filtering
+        document.getElementById("dateFilter").addEventListener("input", function() {
+            var filter = this.value.toLowerCase();
+            var rows = document.querySelectorAll("#riderTable tbody tr");
+
+            rows.forEach(function(row) {
+                var cell = row.getElementsByTagName("td")[0];
+                if (cell) {
+                    var text = cell.textContent.toLowerCase();
+                    row.style.display = text.includes(filter) ? "" : "none";
+                }
+            });
+        });
+    </script>
 </body>
 </html>
