@@ -1,24 +1,45 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <center>
+        <h1 class="fire-text">ARMCO</h1>
+        </center>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Rider Profile</title>
     <style>
         body {
+            background-image: url('{% static "images/signupimg.jpg" %}');
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
         }
-
+        .fire-text {
+            font-size: 3rem;
+            color: transparent;
+            background: linear-gradient(to bottom, #ff0000, #ff6600, #ffcc00, #ff6600, #ff0000);
+            background-clip: text;
+            -webkit-background-clip: text; /* For better browser compatibility */
+            animation: fireEffect 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes fireEffect {
+            0% {
+                text-shadow: 0 0 80px #ff0000, 0 0 20px #ff6600, 0 0 30px #ffcc00, 0 0 40px #ff6600, 0 0 50px #ff0000;
+            }
+            100% {
+                text-shadow: 1 0 5px #ff0000, 0 0 40px #ff6600, 0 0 60px #ffcc00, 0 0 80px #ff6600, 0 0 100px #ff0000;
+            }
+        }
         .container {
             max-width: 500px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
+            border-radius: 40px;
             text-align: center;
         }
 
@@ -45,11 +66,11 @@
         input[type="number"],
         input[type="file"] {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         button {
@@ -120,7 +141,7 @@
             
             <button type="submit">Save Changes</button>
         </form>
-        <a href="{% url 'edit_rider_profile' %}">Back to Profile</a>
+        <a href="{% url 'bike_list' %}">Back to Profile</a>
     </div>
 </body>
 </html>

@@ -1,20 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Booking Form</title>
     <style>
         body {
+            
+            background-image: url('{% static "images/fr2.jpg" %}');
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: #f2f2f2;   
+            font-family: Arial, sans-serif;
+            background-repeat:no-repeat;
+            background-size:cover;
+            
+            font-family: Arial, sans-serif;
+            
             text-align: center;
             padding: 20px;
         }
 
         form {
             background-color: #fff;
-            border-radius: 5px;
+            border-radius: 25px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 30px;
             max-width: 400px;
             margin: 0 auto;
         }
@@ -71,10 +80,10 @@
             <label for="booking-date">Booking Date:</label>
             <input type="date" id="booking-date" name="booking_date" required readonly>
         </div>
-        <div class="form-group">
+        {% comment %} <div class="form-group">
             <label for="additional-details">Additional Details:</label>
             <textarea id="additional-details" name="additional_details"></textarea>
-        </div>
+        </div> {% endcomment %}
         <button type="submit" class="button">Confirm Booking</button>
     </form>
 

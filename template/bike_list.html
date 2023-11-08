@@ -5,13 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bike List</title>
+    <title>Vehicle List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: crimson;
         }
         
         .image-and-specs {
@@ -57,7 +57,7 @@
         }
     
         header {
-            background-color: #333;
+            background-color: crimson;
             color: #fff;
             padding: 20px 0;
             text-align: center;
@@ -98,8 +98,8 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            margin: 20px 0;
+            padding: 10px;
+            margin: 10px 0;
         }
     
         .featured-section img {
@@ -146,10 +146,11 @@
     <header>
         <h1>Bike rentals</h1>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">About</a>
+            <a href="{% url 'index' %}">Home</a>
+            
             <a href="{% url 'edit_rider_profile' %}">Edit Profile</a>
             <a href="{% url 'change_password' %}">Change Password</a>
+            <a href="{% url 'logout' %}">Logout</a>
         </nav>
     </header>
 
