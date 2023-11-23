@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Trackday Date</title>
+    <title>Add/Remove Trackday Date</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,18 +66,28 @@
                 text-shadow: 1 0 5px #ff0000, 0 0 40px #ff6600, 0 0 60px #ffcc00, 0 0 80px #ff6600, 0 0 100px #ff0000;
             }
         }
+        .remove-button {
+            background-color: #dc3545;  /* Bootstrap's danger color */
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <center>
         <h1 class="fire-text">ARMCO</h1>
-        </center>
+    </center>
     <div class="container">
-        <h2>Add Trackday Date</h2>
+        <h2>Add/Remove Trackday Date</h2>
         {% if date_added_successfully %}
-            <script>
-                alert("Date added successfully!");
-            </script>
+            {% if request.POST.action == 'add' %}
+                <script>
+                    alert("Date added successfully!");
+                </script>
+            {% endif %}
+        {% elif request.POST.action == 'remove' %}
+            <div style="color: green; margin-bottom: 10px;">
+                Date removed successfully!
+            </div>
         {% endif %}
         <form method="post">
             {% csrf_token %}
@@ -86,17 +96,26 @@
                 <input type="date" id="trackdate" name="date" required>
                 <span id="date-validation-message" style="color: red;"></span>
             </div>
-            <button type="submit" id="submit-button" disabled>Add Date</button>
+            <button type="submit" name="action" value="add" id="submit-button" disabled>Add Date</button>
         </form>
 
-        <!-- Display the list of added trackdays -->
+        <!-- Display the list of added trackdays with remove option -->
         {% if trackdays %}
-        <h3>Added Trackdays:</h3>
-        <ul>
-            {% for trackday in trackdays %}
-            <li>{{ trackday.date }}</li>
-            {% endfor %}
-        </ul>
+            <h3>Added Trackdays:</h3>
+            <ul>
+                {% for trackday in trackdays %}
+                    <li>
+                        {{ trackday.date }}
+                        <!-- Add a remove button with the trackday's ID -->
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="trackday_id" value="{{ trackday.id }}">
+                            <button type="submit" class="remove-button">Remove</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
     </div>
     <script>

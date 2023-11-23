@@ -53,6 +53,12 @@
                 <th>Staffname</th>
                 <th>Email</th>
                 <th>Status</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Date of Birth</th>
+                <th>Aadhaar Card</th>
+                <th>Joining Date</th>
+                <th>Profile Picture</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +67,20 @@
                 <td>{{ staff.username }}</td>
                 <td>{{ staff.email }}</td>
                 <td>{{ staff.status }}</td>
-            </tr>
+                <td>{{ staff.phone_number }}</td>
+                <td>{{ staff.address }}</td>
+                <td>{{ staff.date_of_birth }}</td>
+                <td><a href="{{ staff.aadhaar_card.url }}" target="_blank">View</a></td> 
+                <td>{{ staff.joining_date }}</td>
+           
+            <td>
+                {% if staff.profile_picture %}
+                    <img src="{{ staff.profile_picture.url }}" alt="{{ staff.username }}'s Profile Picture" width="100">
+                {% else %}
+                    No Profile Picture
+                {% endif %}
+            </td>
+        </tr>
             {% endfor %}
         </tbody>
     </table>

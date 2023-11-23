@@ -78,7 +78,35 @@ urlpatterns = [
     
     path('staff_list/', views.staff_list, name='staff_list'),
     
+    path('payment_norent/', views.payment_norent, name='payment_norent'),
     
+    path('edit_rider_norental/', views.edit_rider_norental, name='edit_rider_norental'),
+    
+    # path('booking_confirmation/', views.booking_confirmation, name='booking_confirmation'),
+    
+    # path('book_bike/<int:bike_id>/', views.book_bike, name='book_bike'),
+    
+    # path('rider_finaldetails/', views.rider_finaldetails, name='rider_finaldetails'),
+    path("booking_details/", views.booking_details, name="booking_details"),
+    
+    # path('all_booking_confirmations/', views.all_booking_confirmations, name='all_booking_confirmations'),
+    
+    path('update_bike_availability/', views.update_bike_availability, name='update_bike_availability'),
+    
+    # path('rider/<int:rider_id>/booking_confirmations/', views.rider_booking_confirmations, name='rider_booking_confirmations'),
+
+     path('book/<int:bike_id>/', views.book, name='book'),
+    
+    path('confirm_booking/<int:bike_id>/', views.confirm_booking, name='confirm_booking'),
+    
+    path('confirmed_bookings/', views.confirmed_bookings, name='confirmed_bookings'),
+    
+    path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+
+    path('canceled_bookings/', views.canceled_bookings, name='canceled_bookings'),
+    
+    path('individualinfo/', views.individualinfo, name='individualinfo'),
+
 ]
     
 if settings.DEBUG:

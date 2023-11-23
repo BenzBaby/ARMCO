@@ -15,7 +15,7 @@
         }
     
         body {
-            background-image: url('{% static "images/2.jpg" %}');
+            background-image: url('{% static "images/3.jpg" %}');
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
             background-size: cover;
@@ -178,47 +178,65 @@
     </center>
     <div class="container">
         <h2>Staff Sign Up</h2>
-        <form id="signup-form" action="#" method="post">
+        <form id="signup-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             
-            
-           
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="USERNAME" required oninput="validateUsername()"><br>
-
+            <input type="text" id="username" name="username" placeholder="USERNAME" required oninput="validateUsername"><br>
             <div class="error-message" id="username-error"></div>
-            
+        
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="EMAIL" required>
             <div class="error-message" id="email-error"></div>
-            
-            <label for="password">Password</label>
+        
+            <label for="password">Password:</label>
             <input type="password" id="password" name="password" placeholder="PASSWORD" required><br>
             <div class="error-message" id="password-error"></div>
-            
-            <label for="confirm-password">Confirm Password</label>
+        
+            <label for="confirm-password">Confirm Password:</label>
             <input type="password" id="confirm-password" name="confirm-password" placeholder="CONFIRM PASSWORD" required>
-            <div class="error-message" id="confirm-password-error"></div><br>
-            <center>
-                {% comment %} <label for="user_type">Select One:</label>
+            <div class="error-message" id="confirm-password-error"></div>
+        
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" placeholder="PHONE NUMBER">
             
-                    <select id="user_type" name="user_type" required>
-                        <option value="">Select...</option>
-                        <option value="rider">Rider</option>
-                        <option value="company">Company</option>
-                    </select>
-                </div> {% endcomment %}
-                <div class="dropdown-container">
-                </div><br>
-                <button id="signup-button">Signup</button>
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" rows="4" placeholder="ADDRESS"></textarea>
+        
+            <label for="date_of_birth">Date of Birth:</label>
+            <input type="date" id="date_of_birth" name="date_of_birth">
+            <div class="error-message" id="date-of-birth-error"></div>
+
+            <label for="aadhaar_card">Aadhaar Card Image:</label>
+            <input type="file" id="aadhaar_card" name="aadhaar_card">
+            <div class="error-message" id="aadhaar-card-error"></div>
+            <label for="profile_picture">Profile Picture:</label>
+    <input type="file" id="profile_picture" name="profile_picture">
+
+        
+            <center>
+                <button id="signup-button" type="submit">Sign Up</button>
                 <div class="error-message" id="user-type-error"></div>
-                
-                Already have an account?<a href="{% url "staff_login" %}"> login</a>
-            </form>
+            </center>
+        
+            Already have an account? <a href="{% url 'staff_login' %}">Login</a>
+        </form>
+        
             </div>
             
             <script>
-                
+                function setMinimumDateOfBirth() {
+    const dateOfBirthInput = document.getElementById('date_of_birth');
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - 18); // Subtract 18 years from the current date
+    const maxDate = currentDate.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
+
+    dateOfBirthInput.setAttribute('max', maxDate);
+}
+
+// Call the function to set the minimum date when the page loads
+setMinimumDateOfBirth();
+
                 function validateUsername() {
                     const usernamePattern = /^S-[a-zA-Z0-9]+$/; // Updated pattern
                     const usernameInput = document.getElementById('username');

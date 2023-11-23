@@ -94,7 +94,7 @@
                             <td>{{ bike.max_torque }}</td>
                             <td>₹{{ bike.rent_per_day }}</td>
                             <td>
-                                <input type="number" name="available_count_{{ bike.id }}" value="{{ bike.available_count }}">
+                                <input type="number" name="available_count_{{ bike.id }}" value="{{ bike.available_count }}"min="0" pattern="[0-9]+">
                             </td>
                         </tr>
                     {% endfor %}

@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Bike</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-image: url('{% static "images/fr2.jpg" %}');
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;   
+            font-family: Arial, sans-serif;
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+
+        h1 {
+            color: #009688;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .selected-bike {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .selected-bike img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .booking-details {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        input[type="submit"] {
+            background-color: #009688;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #00796b;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Book a Bike</h1>
+
+    {% if trackday_registration %}
+        <!-- Display rider information if available -->
+        <div class="booking-details">
+            <h2>Rider Information</h2>
+            <p>Rider Name: {{ trackday_registration.rider_name }}</p>
+            <!-- Add other rider information here -->
+        </div>
+    {% endif %}
+
+    {% if selected_bike %}
+        <!-- Display selected bike information and booking form -->
+        <div class="selected-bike">
+            <h2>Selected Bike</h2>
+            <p><strong>{{ selected_bike.name }}</strong></p>
+            <img src="{{ selected_bike.image.url }}" alt="{{ selected_bike.name }} Image">
+
+            <p>Trackday Date: {{ trackday_registration.trackday_date }}</p>
+            <p>Rental Amount per Day: ${{ selected_bike.rent_per_day }}</p>
+            <p>Total Rent Amount ({{ trackday_registration.number_of_trackdays }} days): ${{ total_rent }}</p>
+            <p>Total Trackday Fee: ${{ total_trackday_fee }}</p>
+            <p>Overall Amount: ${{ overall_amount }}</p>
+
+            <!-- Booking form -->
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Add form fields as needed -->
+                
+
+                <input type="submit" value="Confirm Booking">
+            </form>
+        </div>
+    {% else %}
+        <p>No available bikes.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

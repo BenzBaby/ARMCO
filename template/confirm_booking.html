@@ -1,0 +1,27 @@
+<!-- confirm_booking.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Booking</title>
+</head>
+<body>
+    <h1>Confirm Booking</h1>
+    
+    {% if trackday_registration %}
+        <!-- Rider Information (same as before) -->
+    {% endif %}
+    
+    
+    
+  
+    <p>Overall Amount: ${{ overall_amount|floatformat:2 }}</p>
+    
+    <h2>Payment</h2>
+    <form method="post">
+        {% csrf_token %}
+        <!-- Payment processing form or button goes here -->
+        <button type="submit">Pay Now</button>
+    </form>
+</body>
+</html>
