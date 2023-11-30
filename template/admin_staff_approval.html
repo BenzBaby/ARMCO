@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Approval Requests</title>
+</head>
+<body>
+    <h1>Staff Approval Requests</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff_request in staff_requests %}
+                <tr>
+                    <td>{{ staff_request.email }}</td>
+                    <td>
+                        <a href="{% url 'approve_staff' staff_request.id %}">Approve</a> |
+                        <a href="{% url 'reject_staff' staff_request.id %}">Reject</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle List</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Bootstrap background color */
+            color: #343a40; /* Bootstrap dark text color */
+        }
+
+        header {
+            background-image: url('{% static "images/w14.png" %}');
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            
+        }
+
+        header h1 {
+            font-size: 36px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .featured-section {
+            background-color: #343a40; /* Bootstrap dark color */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px 0;
+            color: #fff;
+        }
+
+        .featured-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .bike-card {
+            margin-bottom: 20px;
+            background-color: lightblue; /* Bootstrap background color */
+            border: 1px solid #ced4da; /* Bootstrap border color */
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .bike-card:hover {
+            transform: scale(1.05);
+        }
+
+        .bike-card img {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .bike-details {
+            padding: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #007bff; /* Bootstrap primary color */
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Bootstrap darkened primary color */
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 28px;
+            }
+
+            nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav a {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+ <header class="bg-dark text-white py-4 position-relative">
+    <!-- Background Image -->
+    <div class="header-background"></div>
+
+    <!-- Profile Picture and Greeting -->
+    <div class="profile-section">
+        <div class="profile-picture-container">
+            <img src="{{ profile_picture_url }}" alt="Profile Picture" class="profile-picture">
+        </div>
+        <div class="specs">
+            <h2 class="font-weight-bold">HELLO, {{ rider_username }}</h2>
+            <!-- ... your other specifications ... -->
+        </div>
+    </div>
+
+    <!-- Navigation and Title -->
+    <div class="navigation-section">
+        
+        <nav class="mt-2">
+            <a href="{% url 'index' %}" class="text-white mr-3">Home</a>
+            <a href="{% url 'edit_rider_profile' %}" class="text-white mr-3">Edit Profile</a>
+            <a href="{% url 'change_password' %}" class="text-white mr-3">Change Password</a>
+            <a href="{% url 'logout' %}" class="text-white mr-3">Logout</a>
+            <a href="{% url 'individualinfo' %}" class="text-white">Booking Info</a>
+            
+        </nav>
+        
+    </div>
+</header>
+
+
+
+    <div class="container">
+        <h1 class="text-center">Vehicle List</h1>
+
+        <div class="row">
+            {% for bike in bikes %}
+                <div class="col-md-4">
+                    <div class="card bike-card">
+                        <img src="{{ bike.image.url }}" alt="{{ bike.name }} Image" class="card-img-top">
+                        <div class="bike-details">
+                            <h5 class="card-title font-weight-bold">{{ bike.name }}</h5>
+                            <p class="card-text">Displacement: {{ bike.displacement }}</p>
+                            <p class="card-text">Max Power: {{ bike.max_power }}</p>
+                            <p class="card-text">Max Torque: {{ bike.max_torque }}</p>
+                            <p class="card-text">Additional Features: {% if bike.additional_features %}{{ bike.additional_features|safe }}{% else %}No additional features available.{% endif %}</p>
+                            {% if bike.can_book %}
+                                <a href="{% url 'book' bike.id %}" class="button">BOOK</a>
+                            {% else %}
+                                <p class="text-danger">This Vehicle is fully booked</p>
+                            {% endif %}
+                            <p>Rent: ₹{{ bike.rent_per_day }}/Day</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if bikes|length == 0 %}
+            <p class="text-center">No bikes available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

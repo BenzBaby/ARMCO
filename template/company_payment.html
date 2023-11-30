@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Trackdays Payments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f8fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin: 20px;
+        }
+        
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #1da1f2;
+            color: #fff;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Company Trackdays Payments</h1>
+    <a href="{% url 'edit_company' %}">Edit Company</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Payment Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Company A</td>
+                <td>2023-10-15</td>
+                <td>$500.00</td>
+            </tr>
+            <tr>
+                <td>Company B</td>
+                <td>2023-10-16</td>
+                <td>$750.00</td>
+            </tr>
+            <tr>
+                <td>Company C</td>
+                <td>2023-10-17</td>
+                <td>$600.00</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

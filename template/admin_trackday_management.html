@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add your HTML head content here -->
+</head>
+<body>
+    <h1>Admin Trackday Management</h1>
+    <div>
+        <!-- Add a form for adding or deleting trackdays here -->
+        <!-- You can use Django forms or plain HTML forms, depending on your preference -->
+        <!-- Display existing trackday entries with their details -->
+        <ul>
+            {% for entry in trackday_entries %}
+                <li>
+                    Trackday Date: {{ entry.trackday_date }} | Rider: {{ entry.rider }} | Number of Trackdays: {{ entry.number_of_trackdays }}
+                    <!-- Add delete buttons or other actions as needed -->
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

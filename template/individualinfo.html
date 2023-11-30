@@ -1,0 +1,163 @@
+{% load static %}
+
+<!-- Add Bootstrap CSS link -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa; /* Light background color */
+        color: #343a40; /* Bootstrap dark text color */
+    }
+
+    header {
+        background-image: url('{% static "images/w14.png" %}');
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 36px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .list-group {
+        margin-top: 20px;
+    }
+
+    .list-group-item {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Bootstrap danger color */
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333; /* Darkened danger color */
+    }
+    #popup-message {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    #popup-message p {
+        margin: 0;
+    }
+
+    #popup-message button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+</style>
+<script>
+    // Display the popup message when the page is opened
+    document.addEventListener('DOMContentLoaded', function () {
+        var popupMessage = document.getElementById('popup-message');
+        popupMessage.style.display = 'block';
+
+        // Close the popup after 5 seconds (adjust the time as needed)
+        setTimeout(function () {
+            popupMessage.style.display = 'none';
+        }, 500000);
+    });
+</script>
+<center>
+    <header class="bg-dark text-white py-4 position-relative">
+        <!-- Background Image -->
+        <div class="header-background"></div>
+
+        <!-- Profile Picture and Greeting -->
+        <div class="profile-section">
+            <div class="profile-picture-container">
+                
+            </div>
+            <div class="specs">
+                <h2>Booking Details</h2>
+                <!-- ... your other specifications ... -->
+            </div>
+        </div>
+
+        
+    </header>
+    <div class="container">
+        <div id="popup-message">
+            <p>Cancel before 1 day or refund will not be given.</p>
+            <button onclick="document.getElementById('popup-message').style.display='none'">Got It!</button>
+        </div>
+    <div class="container">
+       
+        <ul class="list-group">
+            {% for booking in bookings %}
+                <li class="list-group-item">
+                    <p>Rider: {{ booking.rider.username }}</p>
+                    <img src="{{ booking.bike.image.url }}" alt="{{ booking.bike.name }} Image" class="img-fluid">
+                    <p>Vehicle Name: {{ booking.bike.name }}</p>
+                    <p>Total Amount: ${{ booking.total_amount }}</p>
+                    <p>Trackday Date: {{ booking.trackday_date }}</p>
+                    <p>Number of Trackdays: {{ booking.number_of_trackdays }}</p>
+                    <p>Confirmed Date: {{ booking.confirmed_date }}</p>
+
+                    {% if booking.cancellation_status == 'cancelled' %}
+                    <button class="btn btn-danger" disabled>Booking Canceled</button>
+                {% else %}
+                    <a href="{% url "cancel_booking" booking.id %}" class="btn btn-danger">Cancel Booking</a>
+                {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</center>
+
+<!-- Add Bootstrap JS and Popper.js (optional) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

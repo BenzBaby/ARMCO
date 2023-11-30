@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Riders</title>
+</head>
+<body>
+    <h1>All Riders</h1>
+    <ul>
+        {% for rider in rider_details %}
+            <li>
+                <strong>Rider Name:</strong> {{ rider.rider_name }}<br>
+                <strong>Trackday Date:</strong> {{ rider.trackday_date }}<br>
+                <strong>Bike Rental:</strong> {{ rider.bike_rental }}<br>
+                <strong>Selected Vehicle:</strong> {{ rider.selected_vehicle }}<br>
+                <strong>Gear Rental:</strong> {{ rider.gear_rental }}<br>
+                <strong>Selected Gear:</strong> {{ rider.selected_gear }}<br>
+                <!-- You can add more fields as needed -->
+                <strong>License PDF:</strong> <a href="{{ rider.license_pdf.url }}">Download License PDF</a><br>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

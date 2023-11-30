@@ -1,0 +1,11 @@
+<!-- confirm_booking_pdf.html -->
+
+<h1>Booking Confirmation</h1>
+<p>Rider: {{ trackday_registration.rider_name }}</p>
+<p>Bike: {{ bike.name }}</p>
+<p>Trackday Date: {{ trackday_registration.trackday_date }}</p>
+<p>Rental Amount per Day: ${{ bike.rent_per_day }}</p>
+<p>Number of Trackdays: {{ trackday_registration.number_of_trackdays }}</p>
+<p>Total Rent Amount: ${{ total_rent }}</p>
+<p>Total Trackday Fee: ${{ total_trackday_fee }}</p>
+<p>Overall Amount: ${{ overall_amount }}</p>

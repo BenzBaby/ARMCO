@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackday Registration</title>
+    <br><br><br>
+    <style>
+        
+        body
+        
+        {
+            background-image: url('{% static "images/yas.jpg" %}');
+            
+            background-size:cover;
+            font-family: Arial, sans-serif;background
+            
+            
+            
+            
+            margin: 0;
+            padding: 0;
+        }
+    
+       
+        {
+            font-family: Arial, sans-serif;
+            
+            margin: 0;
+            padding: 0;
+        }
+
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        .logout-button {
+            position: absolute;
+            top: 10px; /* Adjust the top distance as needed */
+            right: 10px; /* Adjust the right distance as needed */
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;        }
+    </style>
+</head>
+<body>
+    <form action="{% url 'logout' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Logout</button>
+      </form>
+    <div class="container">
+        <form action="#" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        <div class="user-info">
+            <div class="user-name">Welcome, {{ request.username }}</div>
+            <div class="user-description">Company</div>
+        <h2>Trackday Registration</h2>
+        <form id="registration-form">
+            <div class="form-group">
+                <label for="companyname">Rider Name</label>
+                <input type="text" id="companyname" name="companyname" required value="{{ request.session.username }}" readonly>
+            </div
+            <div class="form-group">
+                <label for="trackdate">Trackday Date</label>
+                <input type="date" id="trackdate" name="trackdate" required min="2023-11-01">
+          
+            </div>
+            <div class="form-group">
+                <label for="riderdetailspdf">Upload Riderdetails (PDF)</label>
+                <input type="file" id="riderdetailspdf" name="riderdetailspdf" accept=".pdf" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+                
+            </div>
+        </form>
+  
+    </div>
+
+   
+</body>
+</html>

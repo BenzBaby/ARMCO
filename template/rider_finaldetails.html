@@ -1,0 +1,36 @@
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h1>All Riders Details</h1>
+        
+        {% for rider_details in riders_details %}
+            <h2>Rider Information</h2>
+            <p>Name: {{ rider_details.rider.username }}</p>
+            <p>Profile Picture: <img src="{{ rider_details.rider.userprofile.profilepicture.url }}" alt="Profile Picture"></p>
+
+            {% if rider_details.trackday_registration %}
+                <h2>Trackday Registration</h2>
+                <p>Trackday Date: {{ rider_details.trackday_registration.trackday_date }}</p>
+                <p>Number of Trackdays: {{ rider_details.trackday_registration.number_of_trackdays }}</p>
+                <p>Rental Amount: ${{ rider_details.trackday_registration.number_of_trackdays|add:"0.000" }}</p>
+            
+                <h2>Booked date</h2>
+                <ul>
+                    {% for booking in rider_details.bookings %}
+                        <li>{{ booking.booked_date }}</li>
+                    {% endfor %}
+                </ul>
+                <h2>Bookings</h2>
+        <ul>
+            {% for booking in bookings %}
+                <li>{{ booking.bike.name }} - {{ booking.booked_date }}</li>
+                <p>Rental Amount: ${{ booking.bike.rent_per_day }}</p>
+                <img src="{{ booking.get_bike_image_url }}" alt="Bike Image">
+            {% endfor %}
+        </ul>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

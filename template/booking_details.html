@@ -1,0 +1,22 @@
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h1>All Bookings</h1>
+        
+        <ul>
+            {% for booking in bookings %}
+                <li>
+                    <strong>Booking for {{ booking.bike.name }}</strong><br>
+                    Rider: {{ booking.rider.username }}<br>
+                    Booked Date: {{ booking.booked_date }}<br>
+                    Rental Amount: ${{ booking.get_bike_rent|floatformat:"2" }}<br>
+                    Number of Trackdays: {{ booking.number_of_trackdays }}<br>
+                    Booked Trackdate: {{ booking.booked_trackdate }}<br>
+                    <img src="{{ booking.get_bike_image_url }}" alt="Bike Image"><br>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

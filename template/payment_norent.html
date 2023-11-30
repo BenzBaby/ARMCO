@@ -1,0 +1,108 @@
+<!-- payment_norent.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .rental-amount {
+            font-size: 24px;
+            color: #FF6600;
+            margin-top: 20px;
+        }
+        a.button {
+            display: inline-block;
+            background-color: #FF6600;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        a.button:hover {
+            background-color: #FF3300;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Page</h1>
+        <p>Registration Details:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Rider Name:</td>
+                <td>{{ registration.rider_name }}</td>
+            </tr>
+            <tr>
+                <td>Trackday Date:</td>
+                <td>{{ registration.trackday_date }}</td>
+            </tr>
+            <tr>
+                <td>Number of Trackdays:</td>
+                <td>{{ registration.number_of_trackdays }}</td>
+            </tr>
+            <tr>
+                <td>Vehicle Rental:</td>
+                <td>{{ registration.vehiclerental }}</td>
+            </tr>
+            <!-- Add other registration details here -->
+        </table>
+
+        <p class="rental-amount">Rental Amount: ${{ rental_amount }}</p>
+
+        <a href="{% url 'edit_rider_norental' %}" class="button">Edit Profile</a>
+
+        <!-- Display the confirmed date if available -->
+        {% if confirmed_date %}
+            <p>Confirmation Date: {{ confirmed_date }}</p>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" value="Submit Payment">
+        </form>
+    </div>
+</body>
+</html>

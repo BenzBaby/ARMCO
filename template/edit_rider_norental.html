@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <center>
+        <h1 class="fire-text">ARMCO</h1>
+        </center>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Rider Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static "images/signupimg.jpg" %}');
+            margin: 0;
+            padding: 0;
+        }
+        .fire-text {
+            font-size: 3rem;
+            color: transparent;
+            background: linear-gradient(to bottom, #ff0000, #ff6600, #ffcc00, #ff6600, #ff0000);
+            background-clip: text;
+            -webkit-background-clip: text; /* For better browser compatibility */
+            animation: fireEffect 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes fireEffect {
+            0% {
+                text-shadow: 0 0 80px #ff0000, 0 0 20px #ff6600, 0 0 30px #ffcc00, 0 0 40px #ff6600, 0 0 50px #ff0000;
+            }
+            100% {
+                text-shadow: 1 0 5px #ff0000, 0 0 40px #ff6600, 0 0 60px #ffcc00, 0 0 80px #ff6600, 0 0 100px #ff0000;
+            }
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            text-align: left;
+            padding: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+            margin-top: 10px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Rider Profile</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% comment %} <label for="ridername">Rider Name:</label>
+            <input type="text" id="ridername" name="ridername" value="{{ existing_registration.rider_name }}"> {% endcomment %}
+            {% if date_added_successfully %}
+            <div class="alert alert-success">
+                Date added successfully!
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="trackdate">Select Trackday Date</label>
+                <select id="trackdate" name="trackdate" required>
+                    {% for date in trackday_dates %}
+                        <option value="{{ date.date|date:'Y-m-d' }}">{{ date.date|date:'Y-m-d' }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            
+            <label for="numberoftrackdays">Number of Track Days:</label>
+            <input type="number" id="numberoftrackdays" name="numberoftrackdays" min="1" max="2" min="1" max="2" value="{{ existing_registration.number_of_trackdays }}">
+            
+            {% comment %} <label for="vehiclerental">Vehicle Rental:</label>
+            <input type="text" id="vehiclerental" name="vehiclerental" value="{{ existing_registration.vehiclerental }}">
+            
+            <label for="gearrental">Gear Rental:</label>
+            <input type="text" id="gearrental" name="gearrental" value="{{ existing_registration.gearrental }}"> {% endcomment %}
+            
+            <label for="licensepdf">License PDF:</label>
+            <input type="file" id="licensepdf" name="licensepdf" value="{{ existing_registration.licensepdf }}">
+
+            <label for="profilepicture">Profile Picture:</label>
+            <input type="file" id="profilepicture" name="profilepicture">
+            
+            <button type="submit">Save Changes</button>
+        </form>
+        <a href="{% url 'edit_rider_norental' %}">Back to Profile</a>
+    </div>
+</body>
+</html>

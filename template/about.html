@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackday Orientation</title>
+    <style>
+        /* Reset some default styles for better cross-browser consistency */
+        body, h1, h2, p, ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Apply some basic styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Verdana', sans-serif;
+            font-size: 36px;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 20px 0;
+        }
+
+        .hero {
+            background-image: url('your-hero-image.jpg');
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .hero h2 {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #ff5722;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .cta-button:hover {
+            background-color: #e64a19;
+        }
+
+        .content {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Add responsive styles */
+        @media screen and (max-width: 768px) {
+            header {
+                text-align: center;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            nav ul {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero h2 {
+                font-size: 36px;
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Trackday Orientation</h1>
+            <nav>
+                <ul>
+               
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+          <div class="container">
+          
+            <img src="{% static "images/brief.jpg" %}"   alt="Description of the image">
+            <a href={% url "index" %} class="cta-button">Home</a> 
+        
+              
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container">
+                <h2>Track Day Orientation</h2>
+                <!-- Add your content here -->
+                <p>Track day orientations are typically informational sessions or briefings provided to participants before they take part in a track day event, which involves driving high-performance or sports cars on a racetrack. The purpose of a track day orientation is to ensure the safety of all participants, promote responsible driving, and provide essential information about the event. 
+                  <br>Here's what you can typically expect during a track day orientation:
+<br>
+                  Safety Briefing: Safety is a top priority during track days. 
+                  The orientation will cover safety rules and guidelines, including proper helmet usage, seatbelt requirements, and flag signals used on the track to communicate with drivers.
+                  <br>         
+                  Track Layout and Features: Participants will be informed about the specific racetrack's layout, including the locations of pit lanes, entry and exit points, and any special features or challenges on the track.
+                  <br>
+                  
+                  Passing Rules: Track days often have specific rules for passing other vehicles on the track. The orientation will explain these rules, such as designated passing zones, hand signals, or point-by passing procedures.
+                  <br>
+                  
+                  Vehicle Inspection: Some track day events require participants to have their vehicles inspected before they can go on the track. This inspection ensures that the car is in good mechanical condition and meets safety standards.
+
+                  <br>
+                  Helmet and Safety Gear Requirements: Information on the type of helmet and other safety gear required for participation will be provided. Some events may provide rental helmets if needed.
+                  <br>
+                  
+                  Event Schedule: The orientation will outline the day's schedule, including track time sessions, classroom sessions (if any), and any additional activities or entertainment.
+                  
+                  <br>
+                  Flags and Signals: Participants will be taught the meaning of various flag signals used by track marshals and officials. These signals are crucial for safety and communication during the event.
+                  <br>
+                  
+                  Driving Etiquette: Track day events promote responsible and respectful driving behavior. Participants will be encouraged to drive within their skill levels and respect the other drivers on the track.
+                  <br>
+                  
+                  Emergency Procedures: In case of accidents or emergencies, participants will be informed of the procedures to follow, including how to contact track staff and emergency services.
+                  <br>
+                  
+                  Rules and Regulations: Any specific event rules and regulations will be explained, such as noise restrictions, behavior expectations in the pit area, and penalties for rule violations.
+                  
+                  <br>
+                  Questions and Answers: Participants will have the opportunity to ask questions and seek clarification on any aspect of the event during the orientation session.
+                  
+                  <br>
+                  Remember that the exact content and format of a track day orientation may vary depending on the event organizer and the specific track. It's essential to pay close attention during the orientation to ensure a safe and enjoyable track day experience.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Your Company. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

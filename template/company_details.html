@@ -1,0 +1,88 @@
+{% load static %}
+
+{% block content %}
+<div class="content" style="background-image: url('{% static "images/w14 (4).jpg" %}'); background-size: cover; background-attachment: fixed; height: 100vh;">
+    <h1 class="page-title">All Company Details</h1>
+
+    {% for company in company_details %}
+    <div class="company-info">
+        <div class="info-row">
+            <div class="info-label"><strong>Company Name:</strong></div>
+            <div class="info-value">{{ company.company_name }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label"><strong>Trackday Date:</strong></div>
+            <div class="info-value">{{ company.trackday_date|date:'F d, Y' }}</div>
+        </div>
+        <div class="info-row">
+            <div class "info-label"><strong>Rider Details PDF:</strong></div>
+            <div class="info-value">
+                <a class="pdf-link" href="{{ company.rider_details_pdf.url }}" target="_blank">View PDF</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if not company_details %}
+    <p class="no-details">No company details found.</p>
+    {% endif %}
+</div>
+
+<style>
+    .content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .page-title {
+        color: #007BFF;
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .company-info {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .info-label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .info-value {
+        color: #333;
+    }
+
+    .pdf-link {
+        text-decoration: none;
+        color: #007BFF;
+        font-weight: bold;
+    }
+
+    .pdf-link:hover {
+        text-decoration: underline;
+    }
+
+    .no-details {
+        color: #ff6347;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+</div>
+{% endblock %}

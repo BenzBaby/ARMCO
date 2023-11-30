@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Company Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f8fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #1da1f2;
+            margin: 20px;
+        }
+        
+        form {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input[type="text"],
+        input[type="date"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        button {
+            background-color: #1da1f2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0f81d9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Company Details</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% comment %} <label for="companyname">Company Name:</label>
+        <input type="text" id="companyname" name="companyname" value="{{ existing_registration.company_name }}"> {% endcomment %}
+        
+        <label for="trackdate">Trackday Date:</label>
+        <input type="date" id="trackdate" name="trackdate" value="{{ existing_registration.trackday_date }}">
+        
+        <label for="riderdetailspdf">Rider Details PDF:</label>
+        <input type="file" id="riderdetailspdf" name="riderdetailspdf">
+        
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>

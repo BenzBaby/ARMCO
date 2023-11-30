@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmed Bookings</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: white;
+            color: navyblue;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #d60000;
+            color: #fff;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+            max-height: 150px;
+        }
+
+        .status-over {
+            background-color: #ff0000;
+            color: #fff;
+        }
+
+        .status-in-progress {
+            background-color: #d60000;
+            color: #fff;
+        }
+
+        .status-upcoming {
+            background-color: #00cc00;
+            color: #fff;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #d60000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff4d4d;
+        }
+
+        /* Hide the form by default */
+        .search-form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="display-4">Confirmed Bookings</h1>
+        
+        <!-- Button to toggle search form visibility -->
+        <button type="button" class="btn btn-primary" onclick="toggleSearchForm()">Search</button>
+
+        <!-- Search form -->
+        <form method="get" action="{% url 'confirmed_bookings' %}" class="search-form">
+            <div class="form-group row">
+                <label for="rider_name" class="col-sm-2 col-form-label">Rider Name:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="rider_name" name="rider_name">
+                </div>
+        
+                <label for="trackday_date" class="col-sm-2 col-form-label">Trackday Date:</label>
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" id="trackday_date" name="trackday_date">
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <label for="number_of_trackdays" class="col-sm-2 col-form-label">Number of Trackdays:</label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control" id="number_of_trackdays" name="number_of_trackdays">
+                </div>
+        
+                <label for="vehicle_name" class="col-sm-2 col-form-label">Vehicle Name:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="vehicle_name" name="vehicle_name">
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <label for="confirmed_date" class="col-sm-2 col-form-label">Confirmed Date:</label>
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" id="confirmed_date" name="confirmed_date">
+                </div>
+                <label for="status">Status:</label>
+                <input type="text" name="status" value="{{ request.GET.status }}">
+                
+                <label for="total_amount">Total Amount:</label>
+                <input type="number" name="total_amount" value="{{ request.GET.total_amount }}">
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        
+        
+        <!-- Table for displaying bookings -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Rider</th>
+                        <th>Bike</th>
+                        <th>Trackday Date</th>
+                        <th>Number of Trackdays</th>
+                        <th>Confirmed Date</th>
+                        <th>Total Rental Amount</th>
+                        <th>Total Trackday Fee</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in confirmed_bookings %}
+                        {% if booking.cancellation_status != 'approved' %}
+                            <tr>
+                                <td>{{ booking.rider.username }}</td>
+                                <td>{{ booking.bike.name }}</td>
+                                <td>{{ booking.trackday_date }}</td>
+                                <td>{{ booking.number_of_trackdays }}</td>
+                                <td>{{ booking.confirmed_date }}</td>
+                                <td>${{ booking.total_rental_amount|floatformat:2 }}</td>
+                                <td>${{ booking.total_trackday_fee|floatformat:2 }}</td>
+                                <td>${{ booking.total_amount|floatformat:2 }}</td>
+                                <td>
+                                    {% with today=date.today %}
+                                        {% if booking.trackday_date < today %}
+                                            <span class="badge badge-danger">Over</span>
+                                        {% elif booking.trackday_date == today %}
+                                            <span class="badge badge-warning">In Progress</span>
+                                        {% else %}
+                                            <span class="badge badge-success">Upcoming</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                
+                                <td><img src="{{ booking.bike.image.url }}" alt="{{ booking.bike.name }}"></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        // Function to toggle the visibility of the search form
+        function toggleSearchForm() {
+            var searchForm = document.querySelector('.search-form');
+            searchForm.style.display = (searchForm.style.display === 'none' || searchForm.style.display === '') ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

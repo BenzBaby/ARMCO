@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: #0073e6;
+            color: #fff;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .staff-table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .staff-table th {
+            background-color: #0073e6;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .staff-table tr {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .staff-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .staff-table td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Staff List</h1>
+
+    <table class="staff-table">
+        <thead>
+            <tr>
+                <th>Staffname</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Date of Birth</th>
+                <th>Aadhaar Card</th>
+                <th>Joining Date</th>
+                <th>Profile Picture</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff in staff_members %}
+            <tr>
+                <td>{{ staff.username }}</td>
+                <td>{{ staff.email }}</td>
+                <td>{{ staff.status }}</td>
+                <td>{{ staff.phone_number }}</td>
+                <td>{{ staff.address }}</td>
+                <td>{{ staff.date_of_birth }}</td>
+                <td><a href="{{ staff.aadhaar_card.url }}" target="_blank">View</a></td> 
+                <td>{{ staff.joining_date }}</td>
+           
+            <td>
+                {% if staff.profile_picture %}
+                    <img src="{{ staff.profile_picture.url }}" alt="{{ staff.username }}'s Profile Picture" width="100">
+                {% else %}
+                    No Profile Picture
+                {% endif %}
+            </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
