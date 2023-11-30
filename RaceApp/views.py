@@ -1667,6 +1667,7 @@ def confirm_booking(request, bike_id):
 from django.shortcuts import render
 from .models import Bookingconfirmed
 from django.db.models import Q
+from django.db.models import Q
 
 def confirmed_bookings(request):
     # Retrieve search parameters from the request
@@ -1677,8 +1678,9 @@ def confirmed_bookings(request):
     confirmed_date = request.GET.get('confirmed_date')
     status = request.GET.get('status')
     total_amount = request.GET.get('total_amount')
+    
     # Start with all confirmed bookings
-    confirmed_bookings = Bookingconfirmed.objects.all()
+    confirmed_bookings = Bookingconfirmed.objects.filter(~Q(cancellation_status='cancelled'))
 
     # Apply filters based on search parameters
     if rider_name:
@@ -1697,8 +1699,9 @@ def confirmed_bookings(request):
         # Convert the confirmed_date string to a datetime object
         confirmed_date = datetime.strptime(confirmed_date, "%Y-%m-%d")
         
-        #Filter by date range (assuming confirmed_date is a DateTimeField)
+        # Filter by date range (assuming confirmed_date is a DateTimeField)
         confirmed_bookings = confirmed_bookings.filter(confirmed_date__date=confirmed_date)
+
     if status:
         confirmed_bookings = confirmed_bookings.filter(status__icontains=status)
 
@@ -1706,6 +1709,7 @@ def confirmed_bookings(request):
         confirmed_bookings = confirmed_bookings.filter(total_amount=float(total_amount))    
 
     return render(request, 'confirmed_bookings.html', {'confirmed_bookings': confirmed_bookings})
+
 
 
 # views.py
@@ -1752,12 +1756,15 @@ def cancel_booking(request, booking_id):
 # views.py
 from django.shortcuts import render
 from .models import Bookingconfirmed
+# views.py
 
-def canceled_bookings(request):
-    canceled_bookings = Bookingconfirmed.objects.filter(cancellation_status='approved')
-    return render(request, 'canceled_bookings.html', {'canceled_bookings': canceled_bookings})
 from django.shortcuts import render
 from .models import Bookingconfirmed
+
+def canceled_bookings(request):
+    canceled_bookings = Bookingconfirmed.objects.filter(cancellation_status='cancelled')
+    return render(request, 'canceled_bookings.html', {'canceled_bookings': canceled_bookings})
+
 
 @login_required
 def individualinfo(request):
