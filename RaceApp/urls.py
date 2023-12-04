@@ -106,6 +106,10 @@ urlpatterns = [
     path('canceled_bookings/', views.canceled_bookings, name='canceled_bookings'),
     
     path('individualinfo/', views.individualinfo, name='individualinfo'),
+    
+    path('payment/<int:booking_id>/', views.payment, name='payment'),
+    
+    path('rules/', views.rules, name='rules'),
 
 ]
     

@@ -209,8 +209,8 @@
                             <form method="post" action="{% url 'staffview' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="user_id" value="{{ profile.id }}">
-                                <input type="text" name="lap_time" placeholder="Enter lap time (Min:Sec)">
-                                <button type="submit">Add/Update Lap Time</button>
+                                <input type="text" id="lap_time" name="lap_time" placeholder="Enter lap time (Min:Sec)">
+                                <button type="submit" id="submit">Add/Update Lap Time</button>
                             </form>
                         {% else %}
                             N/A

@@ -283,7 +283,7 @@ def edit_rider_profile(request):
                     existing_registration.profilepicture = profilepicture
 
                 existing_registration.save()
-                return redirect('bike_list')  # Redirect to the rider's profile page
+                return redirect('bike_list')
 
         # Retrieve the available trackday dates
         trackday_dates = Trackday.objects.all()
@@ -628,7 +628,7 @@ def custom_login(request):
                         if has_previous_rental:
                             return redirect("bike_list")  # Redirect to the bike_list page
                         elif has_previous_non_rental:
-                            return redirect("payment_norent")  # Redirect to the payment_norent page
+                            return redirect("bike_list")  # Redirect to the payment_norent page
                         else:
                             return redirect("rider")  # Redirect to the rider dashboard
                 else:
@@ -1490,7 +1490,7 @@ def update_bike_availability(request):
                 bike.save()
 
     context = {'bikes': bikes}
-    return render(request, 'update_bike_availability.html', context)
+    return render(request, 'update_bike_availability.html', context) 
 # from django.shortcuts import render, get_object_or_404
 # from .models import BookingConfirmation
 # from django.contrib.auth.models import User  # Assuming you're using the built-in User model
@@ -1575,9 +1575,11 @@ def book(request, bike_id):
         recipient_list = [request.user.email]
 
         send_mail(subject, message, from_email, recipient_list)
+        
+        return redirect('payment', booking_id=booking.id) 
 
         # Redirect to a confirmation page or show a success message
-        return HttpResponse('Booking successful. Thank you!')
+        # return HttpResponse('Booking successful. Thank you!')
 
     return render(request, 'book.html', {
         'trackday_registration': trackday_registration,
@@ -1770,3 +1772,47 @@ def canceled_bookings(request):
 def individualinfo(request):
     bookings = Bookingconfirmed.objects.filter(rider=request.user)
     return render(request, 'individualinfo.html', {'bookings': bookings})
+
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404
+from razorpay import Client
+from .models import Bookingconfirmed
+
+razorpay_api_key = settings.RAZORPAY_API_KEY
+razorpay_secret_key = settings.RAZORPAY_API_SECRET
+
+razorpay_client = Client(auth=(razorpay_api_key, razorpay_secret_key))
+
+@csrf_exempt
+def payment(request, booking_id):
+    # Fetch the Bookingconfirmed object based on the booking_id
+    booking = get_object_or_404(Bookingconfirmed, id=booking_id)
+
+    # Convert the overall_amount to paisa (Razorpay expects amount in paisa)
+    amount = int(booking.total_amount * 100)
+
+    # Create a Razorpay order
+    order_data = {
+        'amount': amount,
+        'currency': 'INR',
+        'receipt': f'order_rcptid_{booking.id}',  # Use a unique receipt ID
+        'payment_capture': '1',  # Auto-capture payment
+    }
+
+    # Create an order
+    order = razorpay_client.order.create(data=order_data)
+
+    context = {
+        'razorpay_api_key': razorpay_api_key,
+        'amount': order_data['amount'],
+        'currency': order_data['currency'],
+        'order_id': order['id'],
+        'booking_id': booking.id,
+    }
+
+    return render(request, 'payment.html', context)
+
+
+def rules(request):
+    return render(request, 'rules.html')
