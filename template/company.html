@@ -109,9 +109,12 @@
                 <input type="text" id="companyname" name="companyname" required value="{{ request.session.username }}" readonly>
             </div
             <div class="form-group">
-                <label for="trackdate">Trackday Date</label>
-                <input type="date" id="trackdate" name="trackdate" required min="2023-11-01">
-          
+                <label for="trackdate">Select Trackday Date</label>
+                <select id="trackdate" name="trackdate" required>
+                    {% for date in trackday_dates %}
+                        <option value="{{ date.date|date:'Y-m-d' }}">{{ date.date|date:'Y-m-d' }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="form-group">
                 <label for="riderdetailspdf">Upload Riderdetails (PDF)</label>

@@ -154,14 +154,21 @@
     {% endif %}
     <div class="sidebar">
         <a href="{% url  'admin1' %}">Dashboard</a>
-        <a href="{% url 'adminreg' %}">User Accounts</a> <!-- Add the URL to your user accounts page -->
+        <a href="{% url 'companyinvite' %}"> Company Trackday Invitation</a>
         <a href="{% url 'company_details' %}">View Company Details</a>
         <a href="{% url 'rider_details' %}">View Rider Details</a>
         <a href="{% url 'add_trackday' %}">Add Trackdays</a>
+        <a href="{% url 'input_date' %}">Add Company Trackdays</a>
         <a href="{% url 'admin_bike_view' %}">View Rental Vehicle</a>
         <a href="{% url 'staff_list' %}">Staff Details</a>
         <a href="{% url 'confirmed_bookings' %}">Riders Booked With Rental</a>
         <a href="{% url 'canceled_bookings' %}">Riders Cancelled (Rental)</a>
+        <a href="{% url 'trackdaycancel' %}"> Cancel Trackday</a>
+        <!-- template.html -->
+
+<a href="{% url 'generate_pdf'  %}">Generate PDF</a>
+
+
 
         
 

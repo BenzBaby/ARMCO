@@ -1,0 +1,4 @@
+<!-- existing_app/templates/show_crashes.html -->
+{% for crash in crashes %}
+    <p>{{ crash.timestamp }} - {{ crash.details }}</p>
+{% endfor %}

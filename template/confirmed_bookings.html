@@ -192,6 +192,14 @@
                             </tr>
                         {% endif %}
                     {% endfor %}
+                    <!-- existing code -->
+
+{% if best_selling_vehicle %}
+<p>Best Selling Vehicle: {{ best_selling_vehicle }}</p>
+{% else %}
+<p>No best-selling vehicle data available.</p>
+{% endif %}
+
                 </tbody>
             </table>
         </div>

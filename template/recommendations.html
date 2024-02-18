@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommended Bikes</title>
+</head>
+<body>
+    <h1>Recommended Bikes</h1>
+
+    {% if recommended_bikes %}
+        <ul>
+            {% for bike in recommended_bikes %}
+                <li>{{ bike.name }} - {{ bike.description }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recommendations available.</p>
+    {% endif %}
+</body>
+</html>

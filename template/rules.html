@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racetrack Management System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2, h3 {
+            color: #dc3545;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #6c757d;
+            animation: slideInUp 1s ease;
+        }
+
+        @keyframes slideInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        p {
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        p:hover {
+            color: #dc3545;
+        }
+
+        select {
+            width: 300px;
+            border-radius: 5px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 5px #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4"><strong>Rules and Regulations</strong></h1>
+
+    <section>
+        <p>
+            <strong>* The riders should present with their vehicle before the session starts *</strong><br><br>
+            <strong>* If the riders violate any of the rules, they will be banned for an uncertain time period *</strong><br><br>
+            <label for="sessionTimings"><strong>Session Timings:</strong></label>
+            <select id="sessionTimings" class="form-control">
+                <option value="beginner">Beginner - 8:00 am to 10:00 am</option>
+                <option value="intermediate">Intermediate - 10:30 am to 12:30 pm</option>
+                <option value="pro">Pro - 1:00 pm to 3:00 pm</option>
+            </select>
+        </p>
+        <p>
+            <strong>Safety Gear:</strong><br>
+            Riders must wear approved safety gear, including a helmet, full leather suit, gloves, boots, and back protector.
+            Safety gear should be in good condition and meet the track's safety standards.<br>
+            <strong>Motorcycle Inspection:</strong><br>
+            Motorcycles must undergo a pre-track inspection to ensure they are in good mechanical condition.
+            Tires, brakes, lights, and other critical components should be inspected.<br>
+            <strong>Rider Skill Levels:</strong><br>
+            Trackdays often have different skill levels (Beginner, Intermediate, Advanced/Pro).
+            Riders are typically grouped based on their experience and skill level.<br>
+            <strong>Briefings:</strong><br>
+            Mandatory rider briefings are conducted to communicate track rules, safety guidelines, and any specific information about the event.
+            Important information such as flag meanings and emergency procedures is usually covered.<br>
+            <strong>Passing Rules:</strong><br>
+            Clear rules for passing are established. This may include designated passing zones, no passing in certain corners, and the use of signals.
+            Riders are expected to follow passing rules to prevent accidents.<br>
+            <strong>Speed Limits in Pit Lane:</strong><br>
+            There is often a strict speed limit in the pit lane to ensure the safety of riders and others in the pit area.<br>
+            <strong>Noise Limits:</strong><br>
+            Many tracks have noise restrictions, and riders must ensure their motorcycles meet the specified noise level requirements.<br>
+            <strong>Behavior on Track:</strong><br>
+            Reckless riding, aggressive behavior, and unsportsmanlike conduct are strictly prohibited.
+            Riders are expected to be aware of their surroundings and ride responsibly.<br>
+            <strong>Flag System:</strong><br>
+            Familiarity with the flag system is essential. Different flags convey specific messages, such as caution, debris on the track, or an emergency situation.<br>
+            <strong>Insurance and Liability:</strong><br>
+            Riders may be required to have personal medical insurance, and the track may have liability waivers that participants must sign.<br>
+            <strong>Bike Preparation:</strong><br>
+            Bikes should be free of leaks, and the exhaust system must comply with track noise regulations.
+            Remove or tape over mirrors and lights to prevent injury in case of a fall.<br>
+            <strong>Alcohol and Substance Use:</strong><br>
+            Riding under the influence of alcohol or drugs is strictly prohibited.
+            These are general guidelines, and it's important for riders to review the specific rules and regulations of the particular trackday event they plan to attend. Track organizers usually provide a detailed list of requirements and guidelines for participants on their websites or during pre-event briefings.
+        </p>
+        <hr>
+        <h2 class="mb-4"><strong>Racing Day Instructions</strong></h2>
+        <p>
+            <strong>Check-In:</strong><br>
+            Riders must check-in at the registration desk before the start of the event. You will receive your race number and any additional instructions at this time.<br>
+            <strong>Practice Sessions:</strong><br>
+            There may be practice sessions before the race. Use this time to familiarize yourself with the track and test your bike's setup.<br>
+            <strong>Grid Formation:</strong><br>
+            Riders will be called to the grid according to their race number. Ensure you are in the correct position and ready to start.<br>
+            <strong>Race Start:</strong><br>
+            Listen for the race director's instructions. Races may start with a flag or lights. Follow the designated procedure and be prepared to accelerate when the race begins.<br>
+            <strong>Race Etiquette:</strong><br>
+            Respect other riders on the track. Avoid sudden movements or aggressive maneuvers that could cause accidents.<br>
+            <strong>Flag Signals:</strong><br>
+            Pay attention to flag signals from track marshals. Different flags indicate various track conditions and warnings.<br>
+            <strong>Post-Race:</strong><br>
+            After the race, return to the pit area safely. You may be required to attend a debriefing or provide feedback on the race.<br>
+            <strong>Celebrate Responsibly:</strong><br>
+            If you achieve success on the track, celebrate responsibly. Remember to thank your support team and fellow competitors.<br>
+            These instructions are crucial for a successful and safe racing experience. Adhering to these guidelines will ensure that you and other riders can enjoy the event to the fullest.
+        </p>
+    </section>
+
+    <footer class="mt-5">
+        <p><strong>© 2023 Racetrack Management System</strong></p>
+    </footer>
+</div>
+
+<!-- Bootstrap JS and jQuery (Add these scripts at the end of the body for better performance) -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Lap Times</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Submit Lap Times</h1>
+        <form method="post" action="{% url 'store_lap_times' %}">
+            {% csrf_token %}
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Rider Name</th>
+                            <th>Lap Time (mm:ss)</th>
+                            <th>Total Lap Time</th> <!-- New column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in pdf_rows %}
+                        <tr>
+                            <td>{{ row.0 }}</td>
+                            <td>
+                                <input type="text" name="lap_times[]" class="form-control lap-time-input" pattern="^([0-5]?\d):([0-5]?\d)$" title="Please use mm:ss format">
+                            </td>
+                            <td>
+                                <span class="total-lap-time">00:00</span> <!-- Display total lap time here -->
+                            </td>
+                            <input type="hidden" name="rider_names[]" value="{{ row.0 }}">
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Lap Times</button>
+            <button type="reset" class="btn btn-secondary">Reset</button> <!-- Add reset button -->
+        </form>
+    </div>
+    
+    <!-- Bootstrap JS (optional, if you need JavaScript features) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to calculate total lap time for a row
+            function calculateTotalLapTime(row) {
+                var totalMinutes = 0;
+                var totalSeconds = 0;
+
+                row.find('.lap-time-input').each(function() {
+                    var inputValue = $(this).val();
+                    if (inputValue) {
+                        var timeParts = inputValue.split(':');
+                        totalMinutes += parseInt(timeParts[0]);
+                        totalSeconds += parseInt(timeParts[1]);
+                    }
+                });
+
+                // Convert excess seconds to minutes
+                totalMinutes += Math.floor(totalSeconds / 60);
+                totalSeconds = totalSeconds % 60;
+
+                // Format total lap time
+                var formattedTotalLapTime = ('0' + totalMinutes).slice(-2) + ':' + ('0' + totalSeconds).slice(-2);
+                return formattedTotalLapTime;
+            }
+
+            // Add event listener for input in lap time fields
+            $('.lap-time-input').on('input', function() {
+                var totalLapTime = calculateTotalLapTime($(this).closest('tr'));
+                $(this).closest('tr').find('.total-lap-time').text(totalLapTime);
+
+                // Store total lap time in localStorage
+                var riderName = $(this).closest('tr').find('td:first').text();
+                localStorage.setItem(riderName, totalLapTime);
+            });
+
+            // Restore entered lap times from localStorage on page load
+            $('.lap-time-input').each(function() {
+                var riderName = $(this).closest('tr').find('td:first').text();
+                var storedLapTime = localStorage.getItem(riderName);
+                if (storedLapTime) {
+                    $(this).val(storedLapTime);
+                    var totalLapTime = calculateTotalLapTime($(this).closest('tr'));
+                    $(this).closest('tr').find('.total-lap-time').text(totalLapTime);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

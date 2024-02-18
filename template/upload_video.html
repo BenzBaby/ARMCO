@@ -1,0 +1,6 @@
+<!-- existing_app/templates/upload_video.html -->
+<form method="post" enctype="multipart/form-data" action="{% url 'upload_and_detect_crashes' %}">
+    {% csrf_token %}
+    <input type="file" name="video" accept="video/*">
+    <button type="submit">Upload Video</button>
+</form>
