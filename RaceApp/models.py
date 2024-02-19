@@ -52,9 +52,10 @@ class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     time = models.DurationField(null=True, blank=True)
     category = models.CharField(max_length=20, blank=True, null=True)
-
+    lap_time_entered_at = models.DateTimeField(auto_now_add=True)  
+    
     def __str__(self):
-        return f"{self.user.username}'s Lap Time: {self.time}, Category: {self.category}"
+        return f"{self.user.username}'s Lap Time: {self.time}, Category: {self.category}, Entered At: {self.lap_time_entered_at}"
 
 
 # models.py
@@ -249,3 +250,28 @@ class PaymentRecord(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Payment Record"
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    time = models.DurationField(null=True, blank=True)
+    category = models.CharField(max_length=20, blank=True, null=True)
+    lap_time_entered_at = models.DateTimeField(auto_now_add=True)
+    total_race_time = models.CharField(max_length=100, default='00:00:00')  # Default value example
+
+from django.db import models
+
+class LapTimeEntry(models.Model):
+    rider_name = models.CharField(max_length=100)
+    lap_time = models.CharField(max_length=10)  # Assuming lap time format like mm:ss
+
+    def __str__(self):
+        return f'{self.rider_name} - {self.lap_time}'
+
+from django.db import models
+
+class RacingRider(models.Model):
+    rider_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    license_pdf = models.FileField(upload_to='license_pdfs/')  # Change the upload_to path as needed
+
+    def __str__(self):
+        return self.rider_name

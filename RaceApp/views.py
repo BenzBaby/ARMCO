@@ -283,7 +283,9 @@ def edit_rider_profile(request):
                     existing_registration.profilepicture = profilepicture
 
                 existing_registration.save()
-                return redirect('bike_list')  # Redirect to the rider's profile page
+                alert_message = "Changes have been saved successfully."
+                return HttpResponse(f"<script>alert('{alert_message}'); window.location.href = '/bike_list/';</script>")
+
 
         # Retrieve the available trackday dates
         trackday_dates = Trackday.objects.all()
@@ -305,7 +307,23 @@ from django.contrib.auth.decorators import login_required  # Import the login_re
 
 
  # Import your form if you have one
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+from .models import CompanyTrackdayRegistration
+ # You need to create a form for your model
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+from .models import CompanyTrackdayRegistration
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_protect
+from .models import CompanyTrackdayRegistration
+
+
+@csrf_protect
+@login_required
 def company(request):
     if 'username' in request.session:
         User = get_user_model()
@@ -317,13 +335,14 @@ def company(request):
         if existing_registration:
             # Redirect to the index page or display a message as needed
             return redirect('company_payment')
+
         if request.method == 'POST':
-        # Get form data from POST request
+            # Get form data from POST request
             company_name = request.POST.get('companyname')
             trackday_date = request.POST.get('trackdate')
             rider_details_pdf = request.FILES.get('riderdetailspdf')
 
-        # Create a new CompanyTrackdayRegistration object
+            # Create a new CompanyTrackdayRegistration object
             registration = CompanyTrackdayRegistration(
                 user=user,
                 company_name=company_name,
@@ -335,9 +354,14 @@ def company(request):
             # Redirect or provide a success message
             return redirect('company_payment')
 
-        return render(request, 'company.html')
+        # You need to query the available trackday dates from your models
+        trackday_dates = Trackday.objects.all()  # Replace with the actual model and field names
+
+        return render(request, 'company.html', {'trackday_dates': trackday_dates})
     else:
         return redirect('about')
+
+
     
     
 from django.shortcuts import render, redirect
@@ -355,12 +379,12 @@ def edit_company(request):
             if request.method == 'POST':
                 # Get the updated details from the POST request
                 # company_name = request.POST.get('companyname')
-                trackday_date = request.POST.get('trackdate')
+                
                 rider_details_pdf = request.FILES.get('riderdetailspdf')
 
                 # Update the existing registration with the new details
                 # existing_registration.company_name = company_name
-                existing_registration.trackday_date = trackday_date
+               
 
                 if rider_details_pdf:
                     existing_registration.rider_details_pdf = rider_details_pdf
@@ -496,7 +520,7 @@ def deactivate_user(request, user_id):
 
         # Send deactivation email
         subject = 'Account Deactivation'
-        message = 'Your account has been deactivated by the admin.'
+        message = 'Your account has been deactivated by the admin due to the trackday rules violations.'
         from_email = 'benzbaby10@gmail.com'  # Replace with your email
         recipient_list = [user.email]
         html_message = render_to_string('deactivation_email.html', {'user': user})
@@ -628,7 +652,7 @@ def custom_login(request):
                         if has_previous_rental:
                             return redirect("bike_list")  # Redirect to the bike_list page
                         elif has_previous_non_rental:
-                            return redirect("payment_norent")  # Redirect to the payment_norent page
+                            return redirect("bike_list")  # Redirect to the payment_norent page
                         else:
                             return redirect("rider")  # Redirect to the rider dashboard
                 else:
@@ -1490,7 +1514,7 @@ def update_bike_availability(request):
                 bike.save()
 
     context = {'bikes': bikes}
-    return render(request, 'update_bike_availability.html', context)
+    return render(request, 'update_bike_availability.html', context) 
 # from django.shortcuts import render, get_object_or_404
 # from .models import BookingConfirmation
 # from django.contrib.auth.models import User  # Assuming you're using the built-in User model
@@ -1570,14 +1594,16 @@ def book(request, bike_id):
 
         # Send confirmation email
         subject = 'Booking Confirmation'
-        message = f'Thank you for booking your track day. Your total amount is: ${overall_amount}'
+        message = f'ARMCO RACETRACKS TRACKDAY BOOKING : Thank you for booking your track day. Your total amount is: ${overall_amount}'
         from_email = settings.DEFAULT_FROM_EMAIL  # Use your email settings
         recipient_list = [request.user.email]
 
         send_mail(subject, message, from_email, recipient_list)
+        
+        return redirect('payment', booking_id=booking.id) 
 
         # Redirect to a confirmation page or show a success message
-        return HttpResponse('Booking successful. Thank you!')
+        # return HttpResponse('Booking successful. Thank you!')
 
     return render(request, 'book.html', {
         'trackday_registration': trackday_registration,
@@ -1644,7 +1670,7 @@ def confirm_booking(request, bike_id):
         bike.save()
 
         subject = 'Booking Confirmation'
-        message = 'Thank you for booking your track day. Your total amount is: $' + str(overall_amount)
+        message = 'ARMCO TRACKDAYS Thank you for booking your track day. Your total amount is: $' + str(overall_amount)
         from_email = 'benzbaby10@gmail.com'  # Replace with your email address
         recipient_list = [request.user.email]  # Get the rider's email from the user model
 
@@ -1668,6 +1694,12 @@ from django.shortcuts import render
 from .models import Bookingconfirmed
 from django.db.models import Q
 from django.db.models import Q
+from django.db.models import Count
+from datetime import datetime
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Bookingconfirmed  # Replace with the actual import statement for your Bookingconfirmed model
+from .models import Bike
 
 def confirmed_bookings(request):
     # Retrieve search parameters from the request
@@ -1708,9 +1740,17 @@ def confirmed_bookings(request):
     if total_amount:
         confirmed_bookings = confirmed_bookings.filter(total_amount=float(total_amount))    
 
-    return render(request, 'confirmed_bookings.html', {'confirmed_bookings': confirmed_bookings})
+    best_selling_vehicle = get_best_selling_vehicle()
+    return render(request, 'confirmed_bookings.html', {'confirmed_bookings': confirmed_bookings, 'best_selling_vehicle': best_selling_vehicle})
 
+def get_best_selling_vehicle():
+    best_selling_vehicle = Bookingconfirmed.objects.values('bike__name').annotate(booking_count=Count('bike__name')).order_by('-booking_count').first()
 
+    if best_selling_vehicle:
+        best_selling_vehicle_name = best_selling_vehicle['bike__name']
+        return best_selling_vehicle_name
+
+    return None
 
 # views.py
 
@@ -1770,3 +1810,415 @@ def canceled_bookings(request):
 def individualinfo(request):
     bookings = Bookingconfirmed.objects.filter(rider=request.user)
     return render(request, 'individualinfo.html', {'bookings': bookings})
+
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404
+from razorpay import Client
+from .models import Bookingconfirmed
+
+razorpay_api_key = settings.RAZORPAY_API_KEY
+razorpay_secret_key = settings.RAZORPAY_API_SECRET
+
+razorpay_client = Client(auth=(razorpay_api_key, razorpay_secret_key))
+
+@csrf_exempt
+def payment(request, booking_id):
+    # Fetch the Bookingconfirmed object based on the booking_id
+    booking = get_object_or_404(Bookingconfirmed, id=booking_id)
+
+    # Convert the overall_amount to paisa (Razorpay expects amount in paisa)
+    amount = int(booking.total_amount * 100)
+
+    # Create a Razorpay order
+    order_data = {
+        'amount': amount,
+        'currency': 'INR',
+        'receipt': f'order_rcptid_{booking.id}',  # Use a unique receipt ID
+        'payment_capture': '1',  # Auto-capture payment
+    }
+
+    # Create an order
+    order = razorpay_client.order.create(data=order_data)
+
+    context = {
+        'razorpay_api_key': razorpay_api_key,
+        'amount': order_data['amount'],
+        'currency': order_data['currency'],
+        'order_id': order['id'],
+        'booking_id': booking.id,
+    }
+
+    return render(request, 'payment.html', context)
+
+
+def rules(request):
+    return render(request, 'rules.html')
+
+from django.http import HttpResponse
+from django.shortcuts import render
+from .models import UserProfile
+import csv
+
+def generate_laptime_dataset(request):
+    # Fetch data including rider's name and updated date
+    user_profiles = UserProfile.objects.exclude(time__isnull=True)
+    
+    # Prepare list of dictionaries with desired fields
+    laptime_data = [
+        {
+            'rider_name': profile.user.username,
+            'laptime_minutes': int(profile.time.total_seconds() // 60) if profile.time else None,
+            'laptime_seconds': int(profile.time.total_seconds() % 60) if profile.time else None,
+            'category': profile.category,
+            'updated_date': profile.user.last_login if profile.user.last_login else None,
+        }
+        for profile in user_profiles
+    ]
+
+    # Prepare CSV file
+    csv_file_path = 'laptime_dattaset.csv'
+    with open(csv_file_path, 'w', newline='') as csvfile:
+        fieldnames = ['rider_name', 'laptime_minutes', 'laptime_seconds', 'category', 'updated_date']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        writer.writerows(laptime_data)
+
+    return HttpResponse(f"Laptime dataset exported to {csv_file_path}")
+
+from django.shortcuts import render
+from .models import Trackday  # Import your Trackday model or adjust the import
+from django.shortcuts import render, get_object_or_404
+from .models import Trackday  # Update this to match your model's import path
+
+def input_date(request):
+    date_added_successfully = False  # Initialize the success flag
+
+    if request.method == 'POST':
+        # Process the form data and add/remove the trackday from the database
+        action = request.POST.get('action', None)
+
+        if action == 'add':
+            # Add a new trackday
+            date = request.POST['date']
+            if Trackday.objects.filter(date=date).exists():
+                # Date already exists, handle the error or display a message
+                date_added_successfully = False
+            else:
+                # Date is unique, create a new trackday and save it
+                trackday = Trackday(date=date)
+                trackday.save()
+                date_added_successfully = True
+        elif action == 'remove':
+            # Remove an existing trackday
+            trackday_id = request.POST.get('trackday_id', None)
+            if trackday_id:
+                trackday = get_object_or_404(Trackday, pk=trackday_id)
+                trackday.delete()
+                date_added_successfully = True
+
+    # Retrieve all added trackdays
+    trackdays = Trackday.objects.all()  # Modify this to match your model's name
+
+    return render(request, 'input_date.html', {
+        'date_added_successfully': date_added_successfully,
+        'trackdays': trackdays,
+    })
+# views.py
+
+from django.shortcuts import render
+from .models import UserProfile
+
+
+def leaderboard(request):
+    # Retrieve profiles from the database and sort them by lap time
+    profiles = UserProfile.objects.order_by('time')
+
+    # Pass sorted profiles to the template
+    return render(request, 'leaderboard.html', {'profiles': profiles})
+
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.http import JsonResponse, HttpResponse
+from .models import CustomUser  # Import your CustomUser model
+
+def trackdaycancel(request):
+    if request.method == 'POST':
+        # Retrieve all user email addresses from the database
+        all_users = CustomUser.objects.all()
+        emails = [user.email for user in all_users]
+
+        # Example subject and message for the email
+        subject = 'Trackday Cancellation'
+        message = 'Dear participant, the trackday scheduled for tomorrow has been canceled.'
+
+        # Sending emails
+        try:
+            send_mail(subject, message, 'benzbaby10@gmail.com', emails)
+            return HttpResponse("Cancellation message sent successfully!")  # Provide success message
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return render(request, 'trackdaycancel.html')
+from PyPDF2 import PdfReader
+from django.shortcuts import render
+from .models import UserProfile  # Import the UserProfile model
+
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from django.http import HttpResponse
+from PyPDF2 import PdfReader
+from .models import UserProfile, CompanyTrackdayRegistration
+
+def generate_pdf(request):
+    # Retrieve all registrations
+    registrations = CompanyTrackdayRegistration.objects.all()
+
+    # Prepare data for the combined table
+    data = [["PDF Content", "Leaderboard"]]
+
+    for registration in registrations:
+        pdf_file = registration.rider_details_pdf
+
+        pdf_text = ""
+        with pdf_file.open(mode='rb') as file:
+            pdf_reader = PdfReader(file)
+            for page_num in range(len(pdf_reader.pages)):
+                pdf_text += pdf_reader.pages[page_num].extract_text()
+
+        # Retrieve leaderboard profiles from the database and sort them by lap time
+        profiles = UserProfile.objects.order_by('time')
+
+        # Determine the maximum number of rows needed for the combined table
+        max_rows = max(len(pdf_text.splitlines()), profiles.count())
+
+        # Fill in the data for the combined table
+        for i in range(max_rows):
+            pdf_content = pdf_text.splitlines()[i] if i < len(pdf_text.splitlines()) else ""
+            profile_info = f"{profiles[i].user.username}: {profiles[i].time}" if i < profiles.count() else ""
+            data.append([pdf_content, profile_info])
+
+    # Create a PDF document
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="combined_report.pdf"'
+
+    # Create a SimpleDocTemplate
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    styles = getSampleStyleSheet()
+
+    # Create a table
+    table = Table(data)
+
+    # Apply styling to the table
+    table.setStyle(TableStyle([('GRID', (0, 0), (-1, -1), 1, colors.black)]))
+
+    # Build the PDF document
+    elements = [table]
+    doc.build(elements)
+
+    return response
+# views.py
+
+from django.shortcuts import render, redirect
+from .models import UserProfile
+from django.contrib import messages
+
+def trackriders(request):
+    profiles = UserProfile.objects.all()
+    return render(request, 'trackriders.html', {'profiles': profiles})
+
+def save_race_time(request):
+    if request.method == 'POST':
+        for profile in UserProfile.objects.all():
+            race_time_key = f'race_time_{profile.id}'
+            user_id_key = f'user_id_{profile.id}'
+            race_time = request.POST.get(race_time_key)
+            user_id = request.POST.get(user_id_key)
+            if race_time and user_id:
+                profile = UserProfile.objects.get(user_id=user_id)
+                profile.total_race_time = race_time
+                profile.save()
+        messages.success(request, 'Race times saved successfully!')
+    return redirect('trackriders')
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import LapTimeEntry
+
+def display_pdf(request):
+    # Assuming you want to display the PDF content of the first registration
+    registration = CompanyTrackdayRegistration.objects.first()
+    pdf_text = ""
+
+    if registration:
+        pdf_file = registration.rider_details_pdf
+
+        with pdf_file.open(mode='rb') as file:
+            pdf_reader = PdfReader(file)
+            for page_num in range(len(pdf_reader.pages)):
+                pdf_text += pdf_reader.pages[page_num].extract_text()
+
+    # Split the PDF content into rows and columns
+    pdf_rows = []
+    for row in pdf_text.split('\n'):
+        rider_name, lap_time = row.split(':') if ':' in row else (row, '')
+        pdf_rows.append([rider_name.strip(), lap_time.strip()])
+
+    return render(request, 'display_pdf.html', {'pdf_rows': pdf_rows})
+from django.shortcuts import render
+from .models import LapTimeEntry
+
+from django.shortcuts import render
+from .models import LapTimeEntry
+from django.http import HttpResponse
+from .models import LapTimeEntry
+# views.py
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def store_lap_times(request):
+    if request.method == 'POST':
+        # Assuming lap times and rider names are submitted via POST request
+        lap_times = request.POST.getlist('lap_times[]')
+        rider_names = request.POST.getlist('rider_names[]')
+
+        # Here, you can process the submitted lap times and rider names as needed
+        # For this example, let's just print them
+        for rider, lap_time in zip(rider_names, lap_times):
+            print(f"Rider: {rider}, Lap Time: {lap_time}")
+
+        # You can return an appropriate response, such as a success message
+        return HttpResponse("Lap times submitted successfully.")
+    else:
+        # Handle other HTTP methods if needed
+        return HttpResponse("Method not allowed.", status=405)
+
+
+from .models import UserProfile
+
+def raceresult(request):
+    # Reusing logic from display_pdf view
+    registration = CompanyTrackdayRegistration.objects.first()
+    pdf_text = ""
+
+    if registration:
+        pdf_file = registration.rider_details_pdf
+
+        with pdf_file.open(mode='rb') as file:
+            pdf_reader = PdfReader(file)
+            for page_num in range(len(pdf_reader.pages)):
+                pdf_text += pdf_reader.pages[page_num].extract_text()
+
+    # Split the PDF content into rows and columns
+    pdf_rows = []
+    for row in pdf_text.split('\n'):
+        rider_name, lap_time = row.split(':') if ':' in row else (row, '')
+        pdf_rows.append([rider_name.strip(), lap_time.strip()])
+
+    # Fetch additional data like username and total race time from UserProfile
+    race_results = UserProfile.objects.all()
+
+    return render(request, 'raceresult.html', {'pdf_rows': pdf_rows, 'race_results': race_results})
+
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+def company_invite(request):
+    return render(request, 'companyinvite.html')
+
+def send_invite(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        
+        # Hardcoded URL for company signup
+        signup_url = 'http://127.0.0.1:8000/companysignup/'
+
+        # Include the signup URL in the email message
+        message += f"\n\nClick the following link to join our company: {signup_url}"
+
+        send_mail(
+            'Invitation to Join Our Company',
+            message,
+            'your_company@example.com',  # Replace with your company email address
+            [email],
+            fail_silently=False,
+        )
+        return HttpResponse('Invitation email sent successfully!')
+    else:
+        return HttpResponse('Invalid request method')
+
+
+def companysignup(request):
+    if request.method == "POST":
+        username=request.POST.get('username')
+        #fullname = request.POST.get('firstname')
+       
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirmPassword = request.POST.get('confirm-password')
+        role = request.POST.get('role')  # Add role selection in your signup form
+       # phone_number = request.POST.get('phoneNumber')
+        #address = request.POST.get('address')
+      
+        
+
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists")
+        elif CustomUser.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+        elif password != confirmPassword:
+            messages.error(request, "Passwords do not match")
+        else:
+            user = CustomUser(username=username,email=email,role=role)  # Change role as needed
+            user.set_password(password)
+            user.is_active=False  #make the user inactive
+            user.save()
+            current_site=get_current_site(request)  
+            email_subject="Activate your account"
+            message=render_to_string('activate.html',{
+                   'user':user,
+                   'domain':current_site.domain,
+                   'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                   'token':generate_token.make_token(user)
+            })
+
+
+            email_message=EmailMessage(email_subject,message,settings.EMAIL_HOST_USER,[email],)
+            EmailThread(email_message).start()
+            messages.info(request,"Active your account by clicking the link send to your email")
+
+           
+            return redirect("login")
+    return render(request,'companysignup.html')
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import RacingRider
+
+def enter_racing_riders_list(request):
+    if request.method == 'POST':
+        rider_names = request.POST.getlist('ridername')
+        emails = request.POST.getlist('email')
+        license_pdfs = request.FILES.getlist('licensepdf')
+
+        for rider_name, email, license_pdf in zip(rider_names, emails, license_pdfs):
+            rider = RacingRider(rider_name=rider_name, email=email, license_pdf=license_pdf)
+            rider.save()
+
+        return JsonResponse({'message': 'Racing riders list stored successfully'}, status=200)
+    else:
+        return render(request, 'enter_racing_riders_list.html')

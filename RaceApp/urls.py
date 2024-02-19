@@ -106,7 +106,38 @@ urlpatterns = [
     path('canceled_bookings/', views.canceled_bookings, name='canceled_bookings'),
     
     path('individualinfo/', views.individualinfo, name='individualinfo'),
+    
+    path('payment/<int:booking_id>/', views.payment, name='payment'),
+    
+    path('rules/', views.rules, name='rules'),
+    
+    path('generate_laptime_dataset/', views.generate_laptime_dataset, name='generate_laptime_dataset'),
 
+    path('input_date/', views.input_date, name='input_date'),
+    
+    path('leaderboard/', views.leaderboard, name='leaderboard'),
+    
+    path('trackdaycancel/', views.trackdaycancel, name='trackdaycancel'),
+    
+    path('display_pdf/', views.display_pdf, name='display_pdf'),
+    
+    path('generate_pdf/', views.generate_pdf, name='generate_pdf'),
+    
+    path('trackriders/', views.trackriders, name='trackriders'),
+    
+    path('save_race_time/', views.save_race_time, name='save_race_time'),  
+    
+    path('store_lap_times/', views.store_lap_times, name='store_lap_times'),
+    
+    path('raceresult/', views.raceresult, name='raceresult'),
+    
+    path('companyinvite/', views.company_invite, name='companyinvite'),
+    path('send_invite/', views.send_invite, name='send_invite'),
+    
+    path('companysignup/', views.companysignup, name='companysignup'),
+    
+    path('enter_racing_riders_list/', views.enter_racing_riders_list, name='enter_racing_riders_list'), 
+    
 ]
     
 if settings.DEBUG:
