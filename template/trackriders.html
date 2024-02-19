@@ -38,7 +38,8 @@
                             <td>{{ profile.lap_time_entered_at }}</td>
                             <td>{{ profile.category }}</td>
                             <td>
-                                <input type="text" name="race_time_{{ forloop.counter }}" value="" placeholder="Enter race time">
+                                <input type="text" name="race_time_{{ forloop.counter }}" value="" placeholder="Enter race time" pattern="(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)">
+    <span class="validation-message"></span>
                                 <input type="hidden" name="user_id_{{ forloop.counter }}" value="{{ profile.user.id }}">
                             </td> <!-- Input field -->
                             <td>{{ profile.total_race_time }}</td> <!-- Display total race time -->
@@ -53,5 +54,27 @@
     <!-- Bootstrap JS (optional, if you need JavaScript features) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var inputFields = document.querySelectorAll('input[name^="race_time_"]');
+            
+            inputFields.forEach(function(inputField) {
+                inputField.addEventListener('input', function() {
+                    var inputValue = this.value;
+                    var isValid = /^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/.test(inputValue);
+                    var validationMessage = this.parentNode.querySelector('.validation-message');
+                    
+                    if (isValid) {
+                        validationMessage.textContent = 'Valid time format';
+                        validationMessage.style.color = 'green';
+                    } else {
+                        validationMessage.textContent = 'Please enter time in hh:mm:ss format';
+                        validationMessage.style.color = 'red';
+                    }
+                });
+            });
+        });
+    </script>
+    
 </body>
 </html>

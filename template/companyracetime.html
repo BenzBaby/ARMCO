@@ -3,13 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rider Names</title>
+    <title>Company Riders Time</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Font - Formula 1 Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Formula+1+Display:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Formula 1 Display', sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table {
+            background-color:navy;
+            color: yellow;
+        }
+
+        .table th, .table td {
+            border: 1px solid #fff;
+        }
+
+        .table th {
+            font-weight: bold;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .validation-message {
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .btn-primary {
+            background-color: #e10600;
+            border-color: #e10600;
+        }
+
+        .btn-primary:hover {
+            background-color: #cc0400;
+            border-color: #cc0400;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5 mb-4">Rider Names</h1>
+        <h1 class="mt-5 mb-4">Company Riders RaceTime</h1>
         <form method="post">
             {% csrf_token %}
             <table class="table">
@@ -24,7 +80,8 @@
                     <tr>
                         <td>{{ data.racer.rider_name }}</td>
                         <td>
-                            <input type="text" class="form-control" id="racer_{{ data.racer.id }}_time" name="racer_{{ data.racer.id }}_time" value="{{ data.company_race_time.race_time }}">
+                            <input type="text" class="form-control race-time-input" id="racer_{{ data.racer.id }}_time" name="racer_{{ data.racer.id }}_time" value="{{ data.company_race_time.race_time }}">
+                            <span class="validation-message"></span>
                         </td>
                     </tr>
                     {% endfor %}
@@ -33,5 +90,25 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+
+    <!-- Bootstrap JS and jQuery (optional) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.race-time-input').on('input', function(){
+                var inputValue = $(this).val();
+                var isValid = /^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/.test(inputValue);
+                var validationMessage = $(this).next('.validation-message');
+                
+                if (isValid) {
+                    validationMessage.text('Valid time format').css('color', 'green');
+                } else {
+                    validationMessage.text('Please enter time in hh:mm:ss format').css('color', 'red');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
