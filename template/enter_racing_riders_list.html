@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racing Riders List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Racing Riders List</h2>
+        <form id="riders-form" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div id="riders-list">
+                <!-- Rider 1 -->
+                <div class="form-row rider-row">
+                    <div class="form-group col-md-4">
+                        <label for="ridername1">Rider Name</label>
+                        <input type="text" class="form-control" id="ridername1" name="ridername" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="email1">Email</label>
+                        <input type="email" class="form-control" id="email1" name="email" required>
+                        <small id="emailHelp1" class="form-text text-muted">Please enter a valid email address.</small>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="licensepdf1">License PDF</label>
+                        <input type="file" class="form-control-file" id="licensepdf1" name="licensepdf" accept=".pdf" required>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="add-rider" title="You can add up to 10 riders">Add Rider</button>
+            <button type="submit" class="btn btn-success mt-3" id="submit-button" disabled title="Please add at least 10 riders">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#add-rider').click(function() {
+                var riderRow = $('.rider-row');
+                var riderCount = $('.rider-row').length;
+                if (riderCount < 10) {
+                    var newRiderRow = riderRow.first().clone();
+                    newRiderRow.find('.form-control').val('');
+                    newRiderRow.find('input[type="file"]').val(null); // Clear file input value
+                    $('#riders-list').append(newRiderRow);
+                    if (riderCount === 9) {
+                        $('#add-rider').prop('disabled', true).attr('title', 'Maximum limit reached');
+                        $('#submit-button').prop('disabled', false).attr('title', '');
+                    }
+                } else {
+                    alert('You can add up to 10 riders.');
+                }
+            });
+
+            $('#riders-form').on('input', 'input[type="email"]', function() {
+                var emailInput = $(this);
+                var email = emailInput.val();
+                var isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                var emailHelp = emailInput.siblings('.text-muted');
+                if (isValid) {
+                    emailInput.removeClass('is-invalid');
+                    emailInput.addClass('is-valid');
+                    emailHelp.hide();
+                } else {
+                    emailInput.removeClass('is-valid');
+                    emailInput.addClass('is-invalid');
+                    emailHelp.show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
