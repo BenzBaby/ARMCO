@@ -194,11 +194,19 @@
                     {% endfor %}
                     <!-- existing code -->
 
-{% if best_selling_vehicle %}
-<p>Best Selling Vehicle: {{ best_selling_vehicle }}</p>
+<!-- existing code -->
+
+{% if best_selling_vehicles %}
+    <p>Best Selling Vehicles:</p>
+    <ul>
+        {% for vehicle_info in best_selling_vehicles %}
+            <li>{{ vehicle_info.name }} ({{ vehicle_info.count }} bookings)</li>
+        {% endfor %}
+    </ul>
 {% else %}
-<p>No best-selling vehicle data available.</p>
+    <p>No best-selling vehicle data available.</p>
 {% endif %}
+
 
                 </tbody>
             </table>
