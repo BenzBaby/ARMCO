@@ -138,6 +138,10 @@ urlpatterns = [
     
     path('enter_racing_riders_list/', views.enter_racing_riders_list, name='enter_racing_riders_list'), 
     
+    path('companyracetime/', views.companyracetime, name='companyracetime'),
+    
+    path('display_rider_times/', views.display_rider_times, name='display_rider_times'),
+    
 ]
     
 if settings.DEBUG:

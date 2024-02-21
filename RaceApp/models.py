@@ -275,3 +275,14 @@ class RacingRider(models.Model):
 
     def __str__(self):
         return self.rider_name
+    
+from django.db import models
+from .models import RacingRider
+
+class CompanyRaceTime(models.Model):
+    racer = models.ForeignKey(RacingRider, on_delete=models.CASCADE)
+    race_time = models.CharField(max_length=10, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.racer.rider_name} - {self.race_time}"
+    

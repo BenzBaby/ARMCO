@@ -822,8 +822,18 @@ def rider_details(request):
 #         return redirect('index')
 
 
+# Assuming this is views.py in your Django app
+
+from django.shortcuts import render
+from .models import CompanyTrackdayRegistration
+
 def company_payment(request):
-    return render(request, 'company_payment.html')
+    # Retrieve all CompanyTrackdayRegistration objects
+    registrations = CompanyTrackdayRegistration.objects.all()
+    
+    # Pass the registrations queryset to the template
+    return render(request, 'company_payment.html', {'registrations': registrations})
+
 
 
 from django.contrib.auth import update_session_auth_hash
@@ -1701,8 +1711,14 @@ from django.db.models import Q
 from .models import Bookingconfirmed  # Replace with the actual import statement for your Bookingconfirmed model
 from .models import Bike
 
+from django.db.models import Count
+from datetime import datetime
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Bookingconfirmed  # Replace with the actual import statement for your Bookingconfirmed model
+from .models import Bike  # Replace with the actual import statement for your Bike model
+
 def confirmed_bookings(request):
-    # Retrieve search parameters from the request
     rider_name = request.GET.get('rider_name')
     trackday_date = request.GET.get('trackday_date')
     number_of_trackdays = request.GET.get('number_of_trackdays')
@@ -1710,11 +1726,9 @@ def confirmed_bookings(request):
     confirmed_date = request.GET.get('confirmed_date')
     status = request.GET.get('status')
     total_amount = request.GET.get('total_amount')
-    
-    # Start with all confirmed bookings
+
     confirmed_bookings = Bookingconfirmed.objects.filter(~Q(cancellation_status='cancelled'))
 
-    # Apply filters based on search parameters
     if rider_name:
         confirmed_bookings = confirmed_bookings.filter(rider__username__icontains=rider_name)
 
@@ -1728,29 +1742,28 @@ def confirmed_bookings(request):
         confirmed_bookings = confirmed_bookings.filter(bike__name__icontains=vehicle_name)
 
     if confirmed_date:
-        # Convert the confirmed_date string to a datetime object
         confirmed_date = datetime.strptime(confirmed_date, "%Y-%m-%d")
-        
-        # Filter by date range (assuming confirmed_date is a DateTimeField)
         confirmed_bookings = confirmed_bookings.filter(confirmed_date__date=confirmed_date)
 
     if status:
         confirmed_bookings = confirmed_bookings.filter(status__icontains=status)
 
     if total_amount:
-        confirmed_bookings = confirmed_bookings.filter(total_amount=float(total_amount))    
+        confirmed_bookings = confirmed_bookings.filter(total_amount=float(total_amount))
 
-    best_selling_vehicle = get_best_selling_vehicle()
-    return render(request, 'confirmed_bookings.html', {'confirmed_bookings': confirmed_bookings, 'best_selling_vehicle': best_selling_vehicle})
+    # Calculate the best-selling vehicles and their counts
+    best_selling_vehicles = get_best_selling_vehicles()
 
-def get_best_selling_vehicle():
-    best_selling_vehicle = Bookingconfirmed.objects.values('bike__name').annotate(booking_count=Count('bike__name')).order_by('-booking_count').first()
+    return render(request, 'confirmed_bookings.html', {'confirmed_bookings': confirmed_bookings, 'best_selling_vehicles': best_selling_vehicles})
 
-    if best_selling_vehicle:
-        best_selling_vehicle_name = best_selling_vehicle['bike__name']
-        return best_selling_vehicle_name
+def get_best_selling_vehicles():
+    best_selling_vehicles = Bookingconfirmed.objects.values('bike__name').annotate(booking_count=Count('bike__name')).order_by('-booking_count')
+    max_booking_count = best_selling_vehicles.first()['booking_count']
 
-    return None
+    best_selling_vehicles_info = [{'name': vehicle['bike__name'], 'count': vehicle['booking_count']} for vehicle in best_selling_vehicles if vehicle['booking_count'] == max_booking_count]
+
+    return best_selling_vehicles_info
+
 
 # views.py
 
@@ -2151,9 +2164,9 @@ def send_invite(request):
         message += f"\n\nClick the following link to join our company: {signup_url}"
 
         send_mail(
-            'Invitation to Join Our Company',
+            'Invitation to Register for trackday',
             message,
-            'your_company@example.com',  # Replace with your company email address
+            'benzbaby10@gmail.com',  # Replace with your company email address
             [email],
             fail_silently=False,
         )
@@ -2222,3 +2235,61 @@ def enter_racing_riders_list(request):
         return JsonResponse({'message': 'Racing riders list stored successfully'}, status=200)
     else:
         return render(request, 'enter_racing_riders_list.html')
+from django.shortcuts import render
+from .models import RacingRider, CompanyRaceTime
+
+def companyracetime(request):
+    # Retrieve all racing riders
+    racers = RacingRider.objects.all()
+
+    if request.method == 'POST':
+        # If the request method is POST, it means the form has been submitted
+        for racer in racers:
+            # Get or create CompanyRaceTime instance for each racer
+            company_race_time, created = CompanyRaceTime.objects.get_or_create(racer=racer)
+
+            # Get the race time for the current racer from the form data
+            race_time = request.POST.get(f'racer_{racer.id}_time', None)
+
+            if race_time is not None:
+                # Update the race time for the current racer
+                company_race_time.race_time = race_time
+                company_race_time.save()
+
+        # After saving race times, set a success message
+        message = "Race times saved successfully!"
+    else:
+        # If the request method is GET, it means it's the initial request to load the page
+        message = None
+
+    # Prepare data to pass to the template
+    racer_data = []
+    for racer in racers:
+        company_race_time, created = CompanyRaceTime.objects.get_or_create(racer=racer)
+        racer_data.append({
+            'racer': racer,
+            'company_race_time': company_race_time
+        })
+
+    # Render the template with the racer data and success message (if any)
+    return render(request, 'companyracetime.html', {'racer_data': racer_data, 'message': message})
+
+from django.shortcuts import render
+from .models import CompanyRaceTime, UserProfile
+
+from django.shortcuts import render
+from .models import CompanyRaceTime, UserProfile
+
+def display_rider_times(request):
+    # Retrieve all CompanyRaceTime objects and UserProfile objects
+    company_race_times = CompanyRaceTime.objects.all()
+    user_profiles = UserProfile.objects.all()
+
+    # Combine both querysets into a single list
+    combined_times = list(company_race_times) + list(user_profiles)
+
+    # Sort the combined list based on race time
+    combined_times.sort(key=lambda x: x.race_time if hasattr(x, 'race_time') else x.total_race_time)
+
+    # Pass the sorted combined list to the template
+    return render(request, 'display_rider_times.html', {'combined_times': combined_times})
