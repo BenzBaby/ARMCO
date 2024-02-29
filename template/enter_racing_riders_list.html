@@ -37,6 +37,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            var enteredEmails = []; // Array to store entered emails
+
             $('#add-rider').click(function() {
                 var riderRow = $('.rider-row');
                 var riderCount = $('.rider-row').length;
@@ -60,9 +62,17 @@
                 var isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
                 var emailHelp = emailInput.siblings('.text-muted');
                 if (isValid) {
-                    emailInput.removeClass('is-invalid');
-                    emailInput.addClass('is-valid');
-                    emailHelp.hide();
+                    if (enteredEmails.includes(email)) {
+                        emailInput.removeClass('is-valid');
+                        emailInput.addClass('is-invalid');
+                        emailHelp.text('Email already exists.');
+                        emailHelp.show();
+                    } else {
+                        emailInput.removeClass('is-invalid');
+                        emailInput.addClass('is-valid');
+                        emailHelp.hide();
+                        enteredEmails.push(email);
+                    }
                 } else {
                     emailInput.removeClass('is-valid');
                     emailInput.addClass('is-invalid');

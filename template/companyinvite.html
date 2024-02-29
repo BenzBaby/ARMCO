@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #000;
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,19 +16,19 @@
             height: 100vh;
         }
         .container {
-            background-color: #fff;
+            background-color: #333;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 40px;
             width: 400px;
         }
         h1 {
-            color: #333;
+            color: #fff;
             text-align: center;
             margin-bottom: 30px;
         }
         label {
-            color: #555;
+            color: #ccc;
             font-weight: bold;
         }
         input[type="email"],
@@ -37,10 +37,12 @@
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #666;
             border-radius: 5px;
             box-sizing: border-box;
             font-size: 16px;
+            background-color: #444;
+            color: #ccc;
         }
         input[type="submit"] {
             background-color: #4CAF50;
@@ -69,7 +71,7 @@
             <label for="message">Invitation Message:</label><br>
             <textarea id="message" name="message" rows="4" required></textarea><br>
             <label for="link">Signup Link:</label><br>
-            <input type="text" id="link" name="link" placeholder="http://127.0.0.1:8000/companysignup/" required><br>
+            
             <input type="submit" value="Send Invitation">
         </form>
     </div>

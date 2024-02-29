@@ -66,7 +66,7 @@
 <body>
     <div class="container">
         <h1 class="mt-5 mb-4">Company Riders RaceTime</h1>
-        <form method="post">
+        <form id="race-time-form" method="post" onsubmit="return validateForm()">
             {% csrf_token %}
             <table class="table">
                 <thead>
@@ -87,7 +87,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" id="submit-button" class="btn btn-primary" disabled>Submit</button>
         </form>
     </div>
 
@@ -96,18 +96,41 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        function validateForm() {
+            var isValid = true;
+            $('.race-time-input').each(function() {
+                var inputValue = $(this).val();
+                if (inputValue !== "DNF" && !/^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/.test(inputValue)) {
+                    isValid = false;
+                    $(this).next('.validation-message').text('Please enter time in hh:mm:ss format or "DNF"').css('color', 'red');
+                }
+            });
+            return isValid;
+        }
+
         $(document).ready(function(){
             $('.race-time-input').on('input', function(){
                 var inputValue = $(this).val();
-                var isValid = /^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/.test(inputValue);
                 var validationMessage = $(this).next('.validation-message');
                 
-                if (isValid) {
-                    validationMessage.text('Valid time format').css('color', 'green');
+                if (inputValue === "DNF" || /^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/.test(inputValue)) {
+                    validationMessage.text('');
                 } else {
-                    validationMessage.text('Please enter time in hh:mm:ss format').css('color', 'red');
+                    validationMessage.text('Please enter time in hh:mm:ss format or "DNF"').css('color', 'red');
                 }
+                checkAllInputs();
             });
+
+            function checkAllInputs() {
+                var allInputsValid = true;
+                $('.race-time-input').each(function() {
+                    var inputValue = $(this).val();
+                    if (inputValue !== "DNF" && !/^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/.test(inputValue)) {
+                        allInputsValid = false;
+                    }
+                });
+                $('#submit-button').prop('disabled', !allInputsValid);
+            }
         });
     </script>
 </body>

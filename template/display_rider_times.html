@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +16,9 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: navy;
+            background-image: url('{% static "images/w14 (2).jpg" %}');
             background-size: 400% 400%;
-            animation: gradient 10s ease infinite;
+            animation: gradient 50s ease infinite;
         }
 
         @keyframes gradient {
@@ -73,7 +74,7 @@
                 background-color: yellow;
             }
             to {
-                background-color: magenta;
+                background-color: white;
             }
         }
     </style>
