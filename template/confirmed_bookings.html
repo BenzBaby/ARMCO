@@ -173,9 +173,9 @@
                                 <td>{{ booking.trackday_date }}</td>
                                 <td>{{ booking.number_of_trackdays }}</td>
                                 <td>{{ booking.confirmed_date }}</td>
-                                <td>${{ booking.total_rental_amount|floatformat:2 }}</td>
-                                <td>${{ booking.total_trackday_fee|floatformat:2 }}</td>
-                                <td>${{ booking.total_amount|floatformat:2 }}</td>
+                                <td>₹{{ booking.total_rental_amount|floatformat:2 }}</td>
+                                <td>₹{{ booking.total_trackday_fee|floatformat:2 }}</td>
+                                <td>₹{{ booking.total_amount|floatformat:2 }}</td>
                                 <td>
                                     {% with today=date.today %}
                                         {% if booking.trackday_date < today %}
