@@ -8,7 +8,7 @@
     <style>
         /* Top-level CSS for table formatting */
         body {
-            background-image: url('{% static "images/img.jpg" %}');
+            background-image: url('{% static "images/yas.jpg" %}');
             background-repeat: no-repeat;
             background-size: cover;
             margin: 0;
@@ -19,7 +19,7 @@
         /* CSS for Sidebar */
         .sidebar {
             width: 250px;
-            background-color: crimson;
+            background-color: black;
             color: #fff;
             position: fixed;
             height: 100%;
@@ -69,7 +69,7 @@
         /* CSS for the filter button */
         .filter-button {
             padding: 10px 20px;
-            background-color: crimson;
+            background-color: black;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -94,7 +94,7 @@
         }
 
         .user-table th {
-            background-color: crimson;
+            background-color: black;
             color: #fff;
         }
 
@@ -154,14 +154,23 @@
     {% endif %}
     <div class="sidebar">
         <a href="{% url  'admin1' %}">Dashboard</a>
-        <a href="{% url 'adminreg' %}">User Accounts</a> <!-- Add the URL to your user accounts page -->
+        <a href="{% url 'companyinvite' %}"> Company Trackday Invitation</a>
         <a href="{% url 'company_details' %}">View Company Details</a>
         <a href="{% url 'rider_details' %}">View Rider Details</a>
         <a href="{% url 'add_trackday' %}">Add Trackdays</a>
+        <a href="{% url 'input_date' %}">Add Company Trackdays</a>
         <a href="{% url 'admin_bike_view' %}">View Rental Vehicle</a>
         <a href="{% url 'staff_list' %}">Staff Details</a>
         <a href="{% url 'confirmed_bookings' %}">Riders Booked With Rental</a>
         <a href="{% url 'canceled_bookings' %}">Riders Cancelled (Rental)</a>
+        <a href="{% url 'trackdaycancel' %}"> Cancel Trackday</a>
+        <a href="{% url 'display_rider_times' %}"> Race Result</a>
+        <a href="{% url 'feedbackdetails' %}">Feedbackdetails</a>
+        <!-- template.html -->
+
+<a href="{% url 'generate_pdf'  %}">Generate PDF</a>
+
+
 
         
 

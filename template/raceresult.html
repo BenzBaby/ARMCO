@@ -1,0 +1,38 @@
+<!-- raceresult.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race Results</title>
+    <style>
+        /* Your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Race Results</h1>
+        <!-- Include content from display_pdf.html -->
+        {% include 'display_pdf.html' %}
+
+        <!-- Display race results -->
+        <h2>Race Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Total Race Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in race_results %}
+                <tr>
+                    <td>{{ result.user.username }}</td>
+                    <td>{{ result.total_race_time }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

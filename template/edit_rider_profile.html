@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                toastr.success("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
     <center>
         <h1 class="fire-text">ARMCO</h1>
         </center>
@@ -141,7 +150,7 @@
             <label for="profilepicture">Profile Picture:</label>
             <input type="file" id="profilepicture" name="profilepicture">
             
-            <button type="submit">Save Changes</button>
+            <button type="submit" id="submit">Save Changes</button>
         </form>
         <a href="{% url 'bike_list' %}">Back to Profile</a>
     </div>

@@ -19,7 +19,7 @@
         /* CSS for Sidebar */
         .sidebar {
             width: 250px;
-            background-color: crimson;
+            background-color: black;
             color: #fff;
             position: fixed;
             height: 100%;
@@ -69,7 +69,7 @@
         /* CSS for the filter button */
         .filter-button {
             padding: 10px 20px;
-            background-color: crimson;
+            background-color:black;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -94,7 +94,7 @@
         }
 
         .user-table th {
-            background-color: crimson;
+            background-color: black;
             color: #fff;
         }
 
@@ -161,6 +161,11 @@
 <div class="sidebar">
     <a href="{% url 'add_or_edit_bike' %}">Add Rentals Vehicle</a>
     <a href="{% url 'update_bike_availability' %}">Update_Vehicle_Availability</a>
+    <a href="{% url 'confirmed_bookings' %}">Riders Booked With Rental</a>
+    <a href="{% url 'canceled_bookings' %}">Riders Cancelled (Rental)</a>
+    <a href="{% url 'leaderboard' %}">Leaderboard</a>
+    <a href="{% url 'trackriders' %}">Enter racetime of Trackriders</a>
+    <a href="{% url 'companyracetime' %}">Enter racetime of Companyriders</a>
     <a href="{% url 'logout' %}">LOGOUT</a>
 </div>
 <div class="content">
@@ -209,8 +214,8 @@
                             <form method="post" action="{% url 'staffview' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="user_id" value="{{ profile.id }}">
-                                <input type="text" name="lap_time" placeholder="Enter lap time (Min:Sec)">
-                                <button type="submit">Add/Update Lap Time</button>
+                                <input type="text" id="lap_time" name="lap_time" placeholder="Enter lap time (Min:Sec)">
+                                <button type="submit" id="submit">Add/Update Lap Time</button>
                             </form>
                         {% else %}
                             N/A
