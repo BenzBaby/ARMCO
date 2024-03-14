@@ -16,13 +16,14 @@
         <h1>Company Trackdays Payments</h1>
         <a href="{% url 'edit_company' %}" class="btn btn-primary">Edit Company</a>
         <a href="{% url 'change_password' %}" class="btn btn-primary">Change Password</a>
+        <br><br>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
                     <th>Company Name</th>
                     <th>Trackday Date</th>
                     <th>Trackday Fee (in Rupees)</th>
-                    <th>Payment</th> <!-- New column for payment link -->
+                    <th>Action</th> <!-- New column for action button -->
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +31,14 @@
                     <td>{{ registration.company_name }}</td>
                     <td>{{ registration.trackday_date }}</td>
                     <td>₹2000.00</td>
-                    <td><a href="{% url 'initiate_payment' %}" class="btn btn-success">Pay Now</a></td> <!-- Payment link -->
+                    <td>
+                        {% if not payment_successful %}
+                            <a href="{% url 'initiate_payment' %}" class="btn btn-success">Pay Now</a>
+                        {% else %}
+                        <a href="{% url 'cancel_companybooking' registration.id %}" class="btn btn-danger">Cancel Company Booking</a>
+
+                        {% endif %}
+                    </td>
                 </tr>
             </tbody>
         </table>

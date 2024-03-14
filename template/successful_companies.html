@@ -1,0 +1,43 @@
+<!-- successful_companies.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Successful Companies</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Your custom CSS styles here */
+        /* Add any custom styling here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Successful Companies</h1>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Company Name</th>
+                    <th>Trackday Date</th>
+                    <th>Payment Amount</th>
+                    <th>Razorpay Order ID</th>
+                    <th>Payment Status</th> <!-- New column for payment status -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in successful_payments %}
+                <tr>
+                    <td>{{ payment.company_name }}</td>
+                    <td>{{ payment.trackday_date }}</td>
+                    <td>₹{{ payment.payment_amount }}</td>
+                    <td>{{ payment.razorpay_order_id }}</td>
+                    <td>{{ payment.payment_status }}</td> <!-- Display payment status -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
