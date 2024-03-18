@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Next Lap</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Predict Next Lap Time for All Riders</h1>
+    
+    <table id="lapTimeTable">
+        <thead>
+            <tr>
+                <th>Rider</th>
+                <th>Past Lap Times</th>
+                <th>Predicted Next Lap Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_profile in all_user_profiles %}
+                <tr>
+                    <td>{{ user_profile.user.username }}</td>
+                    <td>
+                        <ul>
+                            {% for lap_time in user_profile.get_past_lap_times %}
+                                <li>{{ lap_time }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ user_profile.predicted_lap_time }}</td>  <!-- You need to implement this field -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button onclick="downloadCSV()">Download CSV</button>
+
+    <script>
+        function downloadCSV() {
+            const table = document.getElementById('lapTimeTable');
+            const rows = table.querySelectorAll('tr');
+            const csv = [];
+            for (let i = 0; i < rows.length; i++) {
+                const row = [], cols = rows[i].querySelectorAll('td, th');
+                for (let j = 0; j < cols.length; j++) {
+                    row.push(cols[j].innerText);
+                }
+                csv.push(row.join(','));
+            }
+            const csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'lap_times.csv');
+            document.body.appendChild(link);
+            link.click();
+        }
+    </script>
+</body>
+</html>

@@ -208,6 +208,22 @@
                     emailHelp.text('Please enter a valid email address.');
                     emailHelp.show();
                 }
+                
+                // Check if all email inputs are valid
+                var allValid = true;
+                $('input[type="email"]').each(function() {
+                    if (!$(this).hasClass('is-valid')) {
+                        allValid = false;
+                        return false; // Exit loop early if any email is invalid
+                    }
+                });
+                
+                // Show or hide submit button based on validity of all email inputs
+                if (allValid) {
+                    $('#submit-button').show();
+                } else {
+                    $('#submit-button').hide();
+                }
             });
         });
     </script>
