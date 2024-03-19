@@ -52,7 +52,7 @@
                             {% endfor %}
                         </ul>
                     </td>
-                    <td>{{ user_profile.predicted_lap_time }}</td>  <!-- You need to implement this field -->
+                    <td id="predicted-lap-time-{{ user_profile.user.id }}">Loading...</td>  <!-- Placeholder for predicted lap time -->
                 </tr>
             {% endfor %}
         </tbody>
@@ -61,14 +61,36 @@
     <button onclick="downloadCSV()">Download CSV</button>
 
     <script>
+        function predictNextLapTime(userId) {
+            fetch(`/predict-lap-time/${userId}/`)  // Assuming the URL for the prediction view includes the user ID
+                .then(response => response.json())
+                .then(data => {
+                    const predictedLapTimeElement = document.getElementById(`predicted-lap-time-${userId}`);
+                    predictedLapTimeElement.innerText = data.predicted_time;
+                })
+                .catch(error => {
+                    console.error('Error fetching predicted lap time:', error);
+                });
+        }
+
         function downloadCSV() {
             const table = document.getElementById('lapTimeTable');
             const rows = table.querySelectorAll('tr');
             const csv = [];
             for (let i = 0; i < rows.length; i++) {
-                const row = [], cols = rows[i].querySelectorAll('td, th');
+                const row = [];
+                const cols = rows[i].querySelectorAll('td, th');
                 for (let j = 0; j < cols.length; j++) {
-                    row.push(cols[j].innerText);
+                    if (j === 1) { // Check if it's the column for past lap times
+                        const lapTimes = cols[j].querySelectorAll('li');
+                        const lapTimeValues = [];
+                        lapTimes.forEach((lapTime, index) => {
+                            lapTimeValues.push(`Lap ${index + 1}: ${lapTime.innerText}`);
+                        });
+                        row.push(lapTimeValues.join('; ')); // Separating past lap times by semicolon
+                    } else {
+                        row.push(cols[j].innerText);
+                    }
                 }
                 csv.push(row.join(','));
             }
@@ -80,6 +102,11 @@
             document.body.appendChild(link);
             link.click();
         }
+
+        // Call predictNextLapTime function for each user to fetch and display predicted lap times
+        const userIds = [/* List of user IDs */];
+        userIds.forEach(userId => predictNextLapTime(userId));
     </script>
+    
 </body>
 </html>
